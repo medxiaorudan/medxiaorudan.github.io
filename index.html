@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rudan Xiao — Agent Orchestrator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="theme-bar">
+    <button class="theme-btn active" data-theme="matrix" title="Matrix"><span style="background: linear-gradient(135deg, #c8ff00, #00ffc8)"></span></button>
+    <button class="theme-btn" data-theme="bladerunner" title="Blade Runner"><span style="background: linear-gradient(135deg, #ff6a00, #ffaa00)"></span></button>
+    <button class="theme-btn" data-theme="tron" title="Tron"><span style="background: linear-gradient(135deg, #00d4ff, #00ff88)"></span></button>
+    <button class="theme-btn" data-theme="synth" title="Synth"><span style="background: linear-gradient(135deg, #ff2d95, #b44dff)"></span></button>
+    <button class="theme-btn" data-theme="amber" title="Amber"><span style="background: linear-gradient(135deg, #ffb300, #ff6d00)"></span></button>
+  </div>
+
+  <canvas id="gridCanvas"></canvas>
+
+  <nav class="nav" id="nav">
+    <div class="nav-logo"><span class="blink">&gt;</span> rudan.agent</div>
+    <div class="nav-links">
+      <a href="#about">sys.info</a>
+      <a href="#journey">journey</a>
+      <a href="#work">agents</a>
+      <a href="#skills">tools</a>
+      <a href="#art">art</a>
+      <a href="#contact">contact()</a>
+    </div>
+  </nav>
+
+  <!-- Hero: Agent Orchestration Flow -->
+  <section class="hero" id="hero">
+    <div class="flow-diagram" id="flowDiagram">
+      <div class="flow-node flow-input" id="flowInput">
+        <span class="flow-label">User Request</span>
+        <div class="flow-pulse"></div>
+      </div>
+      <div class="flow-line flow-line-1" id="flowLine1"></div>
+      <div class="flow-node flow-orchestrator" id="flowOrch">
+        <span class="flow-name">RUDAN</span>
+        <span class="flow-role">orchestrator</span>
+        <div class="flow-pulse"></div>
+      </div>
+      <div class="flow-branch">
+        <div class="flow-line flow-line-2a"></div>
+        <div class="flow-line flow-line-2b"></div>
+        <div class="flow-line flow-line-2c"></div>
+      </div>
+      <div class="flow-agents">
+        <div class="flow-node flow-sub" id="flowSub1">
+          <span class="flow-label">Analyze</span>
+          <div class="flow-pulse"></div>
+        </div>
+        <div class="flow-node flow-sub" id="flowSub2">
+          <span class="flow-label">Execute</span>
+          <div class="flow-pulse"></div>
+        </div>
+        <div class="flow-node flow-sub" id="flowSub3">
+          <span class="flow-label">Evaluate</span>
+          <div class="flow-pulse"></div>
+        </div>
+      </div>
+      <div class="flow-line flow-line-3"></div>
+      <div class="flow-node flow-output" id="flowOutput">
+        <span class="flow-label">Output</span>
+        <div class="flow-pulse"></div>
+      </div>
+    </div>
+    <p class="hero-subtitle" id="heroSubtitle"></p>
+    <div class="hero-status">
+      <span class="status-dot active"></span>
+      <span>System Online</span>
+      <span class="hero-sep">|</span>
+      <span>Stockholm, SE</span>
+      <span class="hero-sep">|</span>
+      <span>Senior AI Software Engineer</span>
+    </div>
+  </section>
+
+  <!-- About: System Handoff -->
+  <section class="section" id="about">
+    <div class="section-label"><span class="accent">01</span> <span class="dim">// sys.info</span></div>
+    <div class="handoff-card">
+      <div class="handoff-header">
+        <span class="status-dot active"></span>
+        <span class="mono">agent.handoff()</span>
+      </div>
+      <div class="handoff-body">
+        <div class="handoff-field"><span class="field-key">name</span><span class="field-val">Rudan Xiao</span></div>
+        <div class="handoff-field"><span class="field-key">role</span><span class="field-val">Senior AI Software Engineer</span></div>
+        <div class="handoff-field"><span class="field-key">org</span><span class="field-val">Hybridity AB</span></div>
+        <div class="handoff-field"><span class="field-key">clearance</span><span class="field-val">PhD Computer Science</span></div>
+        <div class="handoff-field"><span class="field-key">status</span><span class="field-val"><span class="status-dot active"></span> ACTIVE</span></div>
+        <div class="handoff-field"><span class="field-key">capabilities</span>
+          <span class="field-val field-list">Agentic orchestration, Multi-agent systems, RAG pipelines, MCP integrations, Knowledge graphs, LLM evaluation, Medical imaging AI</span>
+        </div>
+      </div>
+      <div class="handoff-bio">
+        <p>End-to-end experience delivering production AI systems, backend services, and agentic orchestration for regulated workflows. Experienced in turning open-ended user requests into structured, reviewable execution flows across AI services, with a strong focus on traceability, human oversight, evaluation, and reliable delivery.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Journey: Timeline -->
+  <section class="section" id="journey">
+    <div class="section-label"><span class="accent">&mdash;</span> <span class="dim">// journey.log()</span></div>
+    <h2 class="section-title">Execution <span class="accent">Timeline</span></h2>
+
+    <div class="timeline">
+      <div class="timeline-line"></div>
+
+      <div class="timeline-node">
+        <div class="timeline-year">2019</div>
+        <div class="timeline-content">
+          <div class="timeline-title">PhD &mdash; Computer Science</div>
+          <div class="timeline-desc">Universit&eacute; C&ocirc;te d'Azur &amp; INRIA, France. Developed interpretable ML pipelines combining handcrafted radiomics features with deep learning for kidney cancer classification. Built a multi-task CNN for semi-supervised segmentation and classification. Published at MICCAI and ERMIA.</div>
+        </div>
+      </div>
+
+      <div class="timeline-node">
+        <div class="timeline-year">2022</div>
+        <div class="timeline-content">
+          <div class="timeline-title">Karolinska Institute</div>
+          <div class="timeline-desc">Developed deep learning models in PyTorch for early detection and prognosis of breast cancer from 2D mammography and 3D MRI. Built multimodal AI systems integrating imaging data and clinical information for survival prediction.</div>
+        </div>
+      </div>
+
+      <div class="timeline-node">
+        <div class="timeline-year">2024&ndash;Present</div>
+        <div class="timeline-content">
+          <div class="timeline-title">Hybridity AB</div>
+          <div class="timeline-desc">Building an agentic orchestration layer for compliance-focused AI workflows. Productionized LLM microservices with CI/CD and autoscaling. Built a knowledge-graph-based database covering EU and Swedish regulations. Developed end-to-end RAG and multi-agent pipelines with parallel and sequential execution patterns.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Work: Running Agents -->
+  <section class="section" id="work">
+    <div class="section-label"><span class="accent">02</span> <span class="dim">// agents.list()</span></div>
+    <h2 class="section-title">Running <span class="accent">Agents</span></h2>
+
+    <div class="agent-card active-agent">
+      <div class="agent-header">
+        <span class="status-dot active"></span>
+        <span class="agent-name">Hybridity Orchestrator</span>
+        <span class="agent-badge badge-active">ACTIVE</span>
+      </div>
+      <div class="agent-desc">Building an agentic orchestration layer for compliance-focused AI workflows, translating conversational requests into structured execution across evidence review, requirement analysis, control extraction, and reporting. Designed multi-agent execution flows, MCP-style tool integrations, and durable state models enabling traceability, replay, and operator-governed review.</div>
+      <div class="agent-terminal" id="agentTerm1">
+        <div class="term-line">> translating conversational request into execution flow...</div>
+        <div class="term-line">> loading knowledge graph: EU &amp; Swedish regulations</div>
+        <div class="term-line">> spawning sub-agents: [evidence_review, requirement_analysis, policy_review, control_extraction]</div>
+        <div class="term-line">> RAG pipeline: OpenAI + Gemini, parallel execution</div>
+        <div class="term-line">> handoff → operator approval queued, audit event logged</div>
+        <div class="term-line accent">> run complete — traceability ✓ replay ✓ comparison ✓</div>
+      </div>
+      <div class="agent-tags">
+        <span class="tag">Agentic AI</span><span class="tag">MCP</span><span class="tag">Multi-Agent</span><span class="tag">RAG</span><span class="tag">FastAPI</span><span class="tag">GCP</span>
+      </div>
+    </div>
+
+    <div class="agents-grid">
+      <a href="https://github.com/medxiaorudan/SmartCustomerService" target="_blank" class="agent-card mini">
+        <div class="agent-header">
+          <span class="status-dot deployed"></span>
+          <span class="agent-name">SmartCustomerService</span>
+          <span class="agent-badge badge-deployed">DEPLOYED</span>
+        </div>
+        <div class="agent-desc">Full-stack RAG-powered GenAI customer service</div>
+        <div class="agent-tags"><span class="tag">Python</span><span class="tag">RAG</span><span class="tag">React</span></div>
+      </a>
+      <a href="https://github.com/medxiaorudan/CodeGeneration" target="_blank" class="agent-card mini">
+        <div class="agent-header">
+          <span class="status-dot deployed"></span>
+          <span class="agent-name">CodeGeneration</span>
+          <span class="agent-badge badge-deployed">DEPLOYED</span>
+        </div>
+        <div class="agent-desc">Fine-tuned CodeLlama for task-specific C++ generation</div>
+        <div class="agent-tags"><span class="tag">CodeLlama</span><span class="tag">Fine-tuning</span><span class="tag">LLM</span></div>
+      </a>
+      <a href="https://github.com/medxiaorudan/MSSL" target="_blank" class="agent-card mini">
+        <div class="agent-header">
+          <span class="status-dot research"></span>
+          <span class="agent-name">MSSL</span>
+          <span class="agent-badge badge-research">RESEARCH</span>
+        </div>
+        <div class="agent-desc">Semi-supervised segmentation &amp; classification with resource-efficient training (MICCAI)</div>
+        <div class="agent-tags"><span class="tag">PyTorch</span><span class="tag">Medical AI</span><span class="tag">Semi-supervised</span></div>
+      </a>
+      <a href="https://github.com/medxiaorudan/RCC-VascularMorphClassify" target="_blank" class="agent-card mini">
+        <div class="agent-header">
+          <span class="status-dot research"></span>
+          <span class="agent-name">RCC-VascularMorphClassify</span>
+          <span class="agent-badge badge-research">RESEARCH</span>
+        </div>
+        <div class="agent-desc">Kidney cancer classification leveraging vascular network properties for RCC identification</div>
+        <div class="agent-tags"><span class="tag">Python</span><span class="tag">Deep Learning</span><span class="tag">Graph</span></div>
+      </a>
+      <a href="https://github.com/medxiaorudan/ColorectalCancer" target="_blank" class="agent-card mini">
+        <div class="agent-header">
+          <span class="status-dot research"></span>
+          <span class="agent-name">ColorectalCancer</span>
+          <span class="agent-badge badge-research">RESEARCH</span>
+        </div>
+        <div class="agent-desc">Genetic risk assessment for colorectal cancer — analyzing mutations for disease susceptibility</div>
+        <div class="agent-tags"><span class="tag">R Shiny</span><span class="tag">Genomics</span><span class="tag">Risk Assessment</span></div>
+      </a>
+      <a href="https://github.com/medxiaorudan/LLM_NER_MultiNERD" target="_blank" class="agent-card mini">
+        <div class="agent-header">
+          <span class="status-dot deployed"></span>
+          <span class="agent-name">LLM_NER_MultiNERD</span>
+          <span class="agent-badge badge-deployed">DEPLOYED</span>
+        </div>
+        <div class="agent-desc">LLM fine-tuned for Named Entity Recognition on the MultiNERD dataset</div>
+        <div class="agent-tags"><span class="tag">LLM</span><span class="tag">NER</span><span class="tag">Fine-tuning</span></div>
+      </a>
+      <a href="https://github.com/medxiaorudan/DemandForecasting-SCM" target="_blank" class="agent-card mini">
+        <div class="agent-header">
+          <span class="status-dot deployed"></span>
+          <span class="agent-name">DemandForecasting-SCM</span>
+          <span class="agent-badge badge-deployed">DEPLOYED</span>
+        </div>
+        <div class="agent-desc">Time-series demand forecasting with quality checks, planner help bot, and reorder optimization to meet service levels</div>
+        <div class="agent-tags"><span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">Scikit-learn</span></div>
+      </a>
+      <a href="https://github.com/medxiaorudan/MammoScreen" target="_blank" class="agent-card mini">
+        <div class="agent-header">
+          <span class="status-dot deployed"></span>
+          <span class="agent-name">MammoScreen</span>
+          <span class="agent-badge badge-deployed">DEPLOYED</span>
+        </div>
+        <div class="agent-desc">GUI-based image labeler for radiological screenings — loading, viewing, and annotating mammogram images</div>
+        <div class="agent-tags"><span class="tag">Python</span><span class="tag">Tkinter</span><span class="tag">Medical Imaging</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Skills: Tool Registry -->
+  <section class="section" id="skills">
+    <div class="section-label"><span class="accent">03</span> <span class="dim">// tools.registry()</span></div>
+    <h2 class="section-title">Tool <span class="accent">Registry</span></h2>
+
+    <div class="tool-registry">
+      <div class="tool-group">
+        <div class="tool-group-header"><span class="protocol-badge">MCP</span> Agentic / GenAI</div>
+        <div class="tool-list">
+          <div class="tool-item"><span class="tool-name">multi_agent_orchestration</span><span class="tool-type">protocol</span></div>
+          <div class="tool-item"><span class="tool-name">mcp_server</span><span class="tool-type">integration</span></div>
+          <div class="tool-item"><span class="tool-name">a2a_protocol</span><span class="tool-type">protocol</span></div>
+          <div class="tool-item"><span class="tool-name">rag_pipeline</span><span class="tool-type">pipeline</span></div>
+          <div class="tool-item"><span class="tool-name">langchain</span><span class="tool-type">framework</span></div>
+          <div class="tool-item"><span class="tool-name">autogen</span><span class="tool-type">framework</span></div>
+          <div class="tool-item"><span class="tool-name">google_adk</span><span class="tool-type">sdk</span></div>
+        </div>
+      </div>
+      <div class="tool-group">
+        <div class="tool-group-header"><span class="protocol-badge">ML</span> AI / Machine Learning</div>
+        <div class="tool-list">
+          <div class="tool-item"><span class="tool-name">pytorch</span><span class="tool-type">framework</span></div>
+          <div class="tool-item"><span class="tool-name">tensorflow</span><span class="tool-type">framework</span></div>
+          <div class="tool-item"><span class="tool-name">huggingface</span><span class="tool-type">hub</span></div>
+          <div class="tool-item"><span class="tool-name">scikit_learn</span><span class="tool-type">library</span></div>
+          <div class="tool-item"><span class="tool-name">llm_finetuning</span><span class="tool-type">capability</span></div>
+        </div>
+      </div>
+      <div class="tool-group">
+        <div class="tool-group-header"><span class="protocol-badge">OPS</span> Infrastructure</div>
+        <div class="tool-list">
+          <div class="tool-item"><span class="tool-name">python</span><span class="tool-type">language</span></div>
+          <div class="tool-item"><span class="tool-name">fastapi</span><span class="tool-type">framework</span></div>
+          <div class="tool-item"><span class="tool-name">docker</span><span class="tool-type">container</span></div>
+          <div class="tool-item"><span class="tool-name">kubernetes</span><span class="tool-type">orchestrator</span></div>
+          <div class="tool-item"><span class="tool-name">gcp</span><span class="tool-type">cloud</span></div>
+          <div class="tool-item"><span class="tool-name">ci_cd</span><span class="tool-type">pipeline</span></div>
+        </div>
+      </div>
+      <div class="tool-group">
+        <div class="tool-group-header"><span class="protocol-badge">DB</span> Data Stores</div>
+        <div class="tool-list">
+          <div class="tool-item"><span class="tool-name">postgresql</span><span class="tool-type">sql</span></div>
+          <div class="tool-item"><span class="tool-name">neo4j</span><span class="tool-type">graph</span></div>
+          <div class="tool-item"><span class="tool-name">mongodb</span><span class="tool-type">nosql</span></div>
+          <div class="tool-item"><span class="tool-name">qdrant</span><span class="tool-type">vector</span></div>
+          <div class="tool-item"><span class="tool-name">pinecone</span><span class="tool-type">vector</span></div>
+          <div class="tool-item"><span class="tool-name">faiss</span><span class="tool-type">vector</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Art -->
+  <section class="section art-section" id="art">
+    <div class="section-label"><span class="accent">04</span> <span class="dim">// art.gallery()</span></div>
+    <h2 class="section-title">The <span class="accent">Other</span> Side</h2>
+    <p class="art-intro">When I'm not designing multi-agent systems, I paint. Watercolor, acrylic, and sketch — finding structure in abstraction.</p>
+    <div class="art-grid">
+      <a href="https://gallery095.wordpress.com/wp-content/uploads/2025/03/wechatimg5-2.jpg" target="_blank" class="art-thumb"><img src="https://gallery095.wordpress.com/wp-content/uploads/2025/03/wechatimg5-2.jpg" alt="Watercolor" loading="lazy"></a>
+      <a href="https://gallery095.wordpress.com/wp-content/uploads/2025/03/wechatimg27-1.jpg" target="_blank" class="art-thumb"><img src="https://gallery095.wordpress.com/wp-content/uploads/2025/03/wechatimg27-1.jpg" alt="Watercolor" loading="lazy"></a>
+      <a href="https://gallery095.wordpress.com/wp-content/uploads/2025/03/wechatimg10-3.jpg" target="_blank" class="art-thumb"><img src="https://gallery095.wordpress.com/wp-content/uploads/2025/03/wechatimg10-3.jpg" alt="Acrylic" loading="lazy"></a>
+      <a href="https://gallery095.wordpress.com/wp-content/uploads/2025/03/wechatimg29-3.jpg" target="_blank" class="art-thumb"><img src="https://gallery095.wordpress.com/wp-content/uploads/2025/03/wechatimg29-3.jpg" alt="Watercolor" loading="lazy"></a>
+      <a href="https://gallery095.wordpress.com/wp-content/uploads/2025/03/wechatimg9-2.jpg" target="_blank" class="art-thumb"><img src="https://gallery095.wordpress.com/wp-content/uploads/2025/03/wechatimg9-2.jpg" alt="Acrylic" loading="lazy"></a>
+      <a href="https://gallery095.wordpress.com/wp-content/uploads/2025/03/wechatimg19-2.jpg" target="_blank" class="art-thumb"><img src="https://gallery095.wordpress.com/wp-content/uploads/2025/03/wechatimg19-2.jpg" alt="Sketch" loading="lazy"></a>
+      <a href="https://gallery095.wordpress.com/wp-content/uploads/2025/03/wechatimg25-2.jpg" target="_blank" class="art-thumb"><img src="https://gallery095.wordpress.com/wp-content/uploads/2025/03/wechatimg25-2.jpg" alt="Watercolor" loading="lazy"></a>
+      <a href="https://gallery095.wordpress.com/wp-content/uploads/2025/03/wechatimg15-2.jpg" target="_blank" class="art-thumb"><img src="https://gallery095.wordpress.com/wp-content/uploads/2025/03/wechatimg15-2.jpg" alt="Sketch" loading="lazy"></a>
+    </div>
+    <div class="art-cta"><a href="https://gallery095.wordpress.com/" target="_blank" class="btn-ghost">view full gallery &rarr;</a></div>
+  </section>
+
+  <!-- Contact: Function Call -->
+  <section class="section contact" id="contact">
+    <div class="section-label"><span class="accent">05</span> <span class="dim">// agent.contact()</span></div>
+    <div class="contact-terminal">
+      <div class="term-header">
+        <span class="term-dot red"></span><span class="term-dot yellow"></span><span class="term-dot green"></span>
+        <span class="term-title">rudan@agent ~ %</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="accent">&gt;</span> agent.contact({</div>
+        <div class="term-line indent"><span class="field-key">email</span>: "<a href="mailto:medxiaorudan@gmail.com" class="term-link">medxiaorudan@gmail.com</a>",</div>
+        <div class="term-line indent"><span class="field-key">github</span>: "<a href="https://github.com/medxiaorudan" target="_blank" class="term-link">medxiaorudan</a>",</div>
+        <div class="term-line indent"><span class="field-key">linkedin</span>: "<a href="https://linkedin.com/in/rudan-xiao" target="_blank" class="term-link">rudan-xiao</a>",</div>
+        <div class="term-line indent"><span class="field-key">art</span>: "<a href="https://gallery095.wordpress.com/" target="_blank" class="term-link">gallery095</a>",</div>
+        <div class="term-line indent"><span class="field-key">location</span>: "Stockholm, Sweden"</div>
+        <div class="term-line"><span class="accent">&gt;</span> })</div>
+        <div class="term-line"><span class="dim">// Response: Let's build something intelligent together.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span class="mono dim">&copy; 2026 Rudan Xiao</span>
+    <span class="mono dim">Built with agents, coffee, and paint.</span>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
