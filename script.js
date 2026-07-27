@@ -8,7 +8,13 @@ const themeColors = {
   synth:       { r: 255, g: 45,  b: 149  },
   amber:       { r: 255, g: 179, b: 0    },
 };
-let currentColor = themeColors.matrix;
+// Derived from the <html data-theme> attribute rather than hardcoded, because the
+// two had drifted: the document is data-theme="tron" (cyan) while this defaulted to
+// matrix (lime), so the canvas grid and pulses drew lime over an all-cyan palette.
+// The theme bar is commented out in index.html, so nothing ever corrected it.
+// Reading the attribute keeps one source of truth for the active theme.
+let currentColor =
+  themeColors[document.documentElement.dataset.theme] || themeColors.matrix;
 
 // Theme switcher
 document.querySelectorAll('.theme-btn').forEach(btn => {
