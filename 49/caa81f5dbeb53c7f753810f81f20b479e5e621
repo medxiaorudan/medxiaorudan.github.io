@@ -1,0 +1,48 @@
+package.json
+  s_4e372d1db7f9ba::t_7bcf7e2bd6e444 1-10
+.gitignore
+  s_4e372d1db7f9ba::t_d64f1c3d13da0a 5
+  s_4e372d1db7f9ba::t_b24177ffbaf4d4 1-4
+scripts/build-static.sh
+  s_4e372d1db7f9ba::t_9e4677eabfe79d 22
+  s_4e372d1db7f9ba::t_cef3d80361f5c0 1-21,23-24
+projects.html
+  s_4e372d1db7f9ba::t_33609ed4a7427d 1-62
+projects.data.js
+  s_4e372d1db7f9ba::t_ef3bb023054427 45,72,83,101,110,119,128,136,147,175,183,199
+  s_4e372d1db7f9ba::t_f219f91816b31f 1-36,40-44,46-61,66-71,73-82,84-100,102-109,111-118,120-127,129-135,137-146,148-174,176-182,184-198,200-312
+  s_4e372d1db7f9ba::t_db8d357c86beb8 37-39
+  s_4e372d1db7f9ba::t_c048aca89eabde 62-65
+CLAUDE.md
+  s_4e372d1db7f9ba::t_fc0d29883790dd 1-84
+script.js
+  s_4e372d1db7f9ba::t_524e519f04d008 226-232
+  s_4e372d1db7f9ba::t_d994c9758e359d 25-26,28
+  s_4e372d1db7f9ba::t_920faad5892861 264-266
+index.html
+  s_4e372d1db7f9ba::t_9193d0356e3aff 168-173,273-277
+style.css
+  s_4e372d1db7f9ba::t_d8ba20232261c1 1018-1039,1043-1049
+  s_4e372d1db7f9ba::t_ef3bb023054427 1040-1042
+  s_4e372d1db7f9ba::t_6c25021d9d0c4a 872-1017
+404.html
+  s_4e372d1db7f9ba::t_bb26aab5f20882 1-21
+package-lock.json
+  s_4e372d1db7f9ba::t_9ddfb80d4fbd7e 1-12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "49caa81f5dbeb53c7f753810f81f20b479e5e621",
+  "prompts": {},
+  "sessions": {
+    "s_4e372d1db7f9ba": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0984040d-218f-4f24-a52f-2ed3fa03c07c",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Petter Andersson <12279747+Lolispo@users.noreply.github.com>"
+    }
+  }
+}
