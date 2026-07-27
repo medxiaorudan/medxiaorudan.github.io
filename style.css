@@ -1047,3 +1047,99 @@ body {
   white-space: nowrap;
   align-self: flex-start;
 }
+
+/* ==========================================================================
+   Showcase cards — projects with a screenshot get real visual weight.
+   Driven by the presence of a `shot` field in projects.data.js, so only apps a
+   visitor can actually open and use are promoted.
+   ========================================================================== */
+
+/* Full row, not `span 2`. Spanning two of three columns left a dead column that
+   the next showcase card could not fit into, so it wrapped and left a hole —
+   auto-placement does not backfill unless the grid is `dense`, and `dense` would
+   reorder the editorial sequence. A full row also simply gives a live app more
+   room, which is the point. */
+@media (min-width: 720px) {
+  .agent-card.showcase { grid-column: 1 / -1; }
+}
+
+/* Wide screens: screenshot and text side by side, so a full-width card does not
+   become a 560px-tall 16:9 slab. */
+@media (min-width: 900px) {
+  .agent-card.showcase {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 1.5rem;
+  }
+
+  .agent-card.showcase .shot {
+    flex: 1 1 56%;
+    /* Bleeds top/bottom/left to the card edge; the right edge becomes the divider. */
+    margin: -1.5rem 0 -1.5rem -1.5rem;
+    border-radius: 12px 0 0 12px;
+    border-bottom: 0;
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  /* Fill the card height instead of holding a fixed ratio, so the image matches
+     however tall the text column ends up. */
+  .agent-card.showcase .shot img {
+    height: 100%;
+    aspect-ratio: auto;
+    min-height: 250px;
+  }
+
+  .agent-card.showcase .card-body {
+    flex: 1 1 44%;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .agent-card.showcase .card-body .agent-links { margin-top: auto; }
+}
+
+/* Negative margins bleed the image to the card edges — .agent-card has 1.5rem of
+   padding and a 12px radius, so both are matched here. */
+.agent-card .shot {
+  display: block;
+  margin: -1.5rem -1.5rem 1.25rem;
+  border-radius: 12px 12px 0 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+  background: var(--bg-alt);
+}
+
+.agent-card .shot img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  /* Top-anchored: a screenshot's header and nav carry the identity, and centring
+     would crop them out in favour of empty page middle. */
+  object-position: top center;
+  transition: transform 0.45s ease;
+}
+
+.agent-card.showcase:hover .shot img { transform: scale(1.02); }
+
+/* ==========================================================================
+   Collapsed earlier work (projects.html)
+   ========================================================================== */
+
+.more-work { margin-top: 3.5rem; }
+
+.more-work > summary {
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 0.9rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  transition: color 0.2s;
+}
+
+.more-work > summary:hover { color: var(--accent); }
+.more-work[open] > summary { color: var(--accent); margin-bottom: 1.25rem; }

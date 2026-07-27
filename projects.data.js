@@ -6,17 +6,28 @@
 //
 // Fields:
 //   id          stable slug. Also the DOM key; keep it kebab-case.
-//   name        display name.
+//   name        display name. Prose, not a repo slug — the slug lives in `repo`.
 //   description one or two sentences. Sourced from the repo's own GitHub description
 //               where one exists, trimmed for length. See NEEDS-DESCRIPTION below.
 //   url         the live, clickable deployment. Omit when there isn't one.
 //   repo        the GitHub URL. Omit only if there is no public repo.
+//   shot        screenshot of the running app, relative to the site root. Presence of
+//               this field is what promotes a card to the wide "showcase" treatment,
+//               so only set it for things a visitor can actually open and use.
+//   shotPos     object-position for that screenshot. Cards crop hard, so this matters:
+//               default 'top center' keeps a header/nav visible, which is right for a
+//               dashboard, but an app whose content sits in the middle of the viewport
+//               needs 'center' or the crop shows empty chrome. Omit for the default.
 //   icon        absolute URL to the site's own favicon, shown next to the live link.
-//               Omit when the site serves none — the UI then draws a colored
+//               Omit when the site serves none — the UI then draws a coloured
 //               initial-badge instead (see projectFavicon below). Each site owns its
 //               own favicon; they are added per repo, not shared from the platform.
-//   status      'active' | 'live' | 'research'  → drives the status dot + badge.
-//   tier        'core' | 'flagship' | 'minor'   → groups the projects page.
+//   status      'live' for something you can open right now, which renders a dot and a
+//               LIVE badge. OMIT IT OTHERWISE. There is deliberately no 'research'
+//               label any more: the framing is full-stack engineering, and badging most
+//               of the list RESEARCH buried that. Publications still show up where they
+//               matter, in the description and tags (e.g. MSSL / MICCAI).
+//   tier        'core' | 'flagship' | 'minor'  → groups the projects page.
 //   featured    shown on the homepage grid.
 //   tags        short tech labels.
 //   year        last meaningful activity, for display only — never for ordering.
@@ -26,7 +37,7 @@
 // Machine-Learning-Study-Path-March-2019) — they are other people's work.
 
 window.PROJECTS = [
-  // ---------- Core: the live, agentic, most-current work ----------
+  // ---------- Core: what a visitor should open first ----------
   {
     id: 'enterprise-resilience-agent',
     name: 'Enterprise Resilience Agent',
@@ -34,11 +45,12 @@ window.PROJECTS = [
       'A multicloud resilience platform that detects failures early, explains likely causes, recommends safe remediation, and recovers through controlled, auditable runbooks.',
     url: 'https://era-api.rudanxiao.com/',
     repo: 'https://github.com/medxiaorudan/EnterpriseResilienceAgent',
+    shot: 'img/projects/enterprise-resilience-agent.jpg',
     // No icon: /favicon.ico returns 200 but with content-type text/html — it's the
     // SPA index fallback, not an image. A status-only check passes it, a browser
     // does not. Badge fallback instead until the app ships a real icon.
     status: 'live', tier: 'core', featured: true,
-    tags: ['TypeScript', 'Agentic AI', 'Multicloud', 'Runbooks'], year: 2026, hue: 190,
+    tags: ['TypeScript', 'React', 'Agentic AI', 'Multicloud'], year: 2026, hue: 190,
   },
   {
     id: 'smart-customer-service',
@@ -47,10 +59,12 @@ window.PROJECTS = [
       'A RAG-powered GenAI application: administrators securely manage company data, and users hold company-specific conversations — falling back to a base LLM when no data is available.',
     url: 'https://smart-customer-service.rudanxiao.com/',
     repo: 'https://github.com/medxiaorudan/SmartCustomerService',
+    shot: 'img/projects/smart-customer-service.jpg',
+    shotPos: 'center',
     // No icon: the site declares /favicon.ico but it 404s, so the badge fallback is
     // more honest than a broken image. Add the URL back once the file exists.
     status: 'live', tier: 'core', featured: true,
-    tags: ['Python', 'RAG', 'React', 'DeepSeek'], year: 2026, hue: 265,
+    tags: ['Python', 'React', 'RAG', 'DeepSeek'], year: 2026, hue: 265,
   },
   {
     id: 'mammoscreen',
@@ -59,41 +73,33 @@ window.PROJECTS = [
       'Review and label mammography images, including DICOM. Runs entirely in the browser — images never leave your device.',
     url: 'https://mammoscreen.rudanxiao.com/',
     repo: 'https://github.com/medxiaorudan/MammoScreen',
-    // The deployed favicon.svg is currently malformed XML (a double hyphen inside
-    // an XML comment), so it serves 200 but will not decode as an image and the
-    // badge fallback shows instead. Fixed at source in ~/HobbyProjects/mammoscreen;
-    // this starts working by itself the next time mammoscreen is deployed.
+    shot: 'img/projects/mammoscreen.jpg',
+    shotPos: 'center',
+    // The only real favicon in the list so far. It was briefly broken — malformed XML
+    // from a double hyphen inside an XML comment, which served a clean 200 but would
+    // not decode — fixed at source and redeployed 2026-07-28.
     icon: 'https://mammoscreen.rudanxiao.com/favicon.svg',
     status: 'live', tier: 'core', featured: true,
     tags: ['TypeScript', 'DICOM', 'Medical Imaging', 'Browser-only'], year: 2026, hue: 330,
   },
-  {
-    id: 'prior-art-discovery-agent',
-    name: 'Prior Art Discovery Agent',
-    description:
-      'An agentic system that takes a patent number and returns a ranked list of candidate prior-art references, each with supporting evidence for how it maps to the patent’s claims.',
-    repo: 'https://github.com/medxiaorudan/PriorArtDiscoveryAgent',
-    status: 'research', tier: 'core', featured: true,
-    tags: ['Python', 'Agentic AI', 'Patents', 'Retrieval'], year: 2026, hue: 45,
-  },
-
-  // ---------- Flagship: substantial research and applied ML ----------
   {
     id: 'code-generation',
     name: 'Code Generation',
     description:
       'Prompt engineering with LangChain plus fine-tuning of CodeLlama to generate task-specific C++ snippets, validated by unit tests for correctness.',
     repo: 'https://github.com/medxiaorudan/CodeGeneration',
-    status: 'research', tier: 'flagship', featured: true,
+    tier: 'core', featured: true,
     tags: ['C++', 'CodeLlama', 'LangChain', 'Fine-tuning'], year: 2025, hue: 20,
   },
+
+  // ---------- Selected work. The two PhD projects lead. ----------
   {
     id: 'mssl',
     name: 'MSSL',
     description:
       'PyTorch model for vascular segmentation and classification from limited data, combining semi-supervised and supervised training for resource-efficient auto-segmentation. Published at MICCAI.',
     repo: 'https://github.com/medxiaorudan/MSSL',
-    status: 'research', tier: 'flagship', featured: true,
+    tier: 'flagship', featured: true,
     tags: ['PyTorch', 'Semi-supervised', 'Medical AI', 'MICCAI'], year: 2023, hue: 150,
   },
   {
@@ -102,8 +108,17 @@ window.PROJECTS = [
     description:
       'Kidney cancer classification that uniquely leverages vascular network properties for RCC identification — Python for ML, MATLAB for advanced feature extraction.',
     repo: 'https://github.com/medxiaorudan/RCC-VascularMorphClassify',
-    status: 'research', tier: 'flagship', featured: false,
+    tier: 'flagship', featured: true,
     tags: ['MATLAB', 'Python', 'Deep Learning', 'Oncology'], year: 2023, hue: 285,
+  },
+  {
+    id: 'prior-art-discovery-agent',
+    name: 'Prior Art Discovery Agent',
+    description:
+      'An agentic system that takes a patent number and returns a ranked list of candidate prior-art references, each with supporting evidence for how it maps to the patent’s claims.',
+    repo: 'https://github.com/medxiaorudan/PriorArtDiscoveryAgent',
+    tier: 'flagship', featured: false,
+    tags: ['Python', 'Agentic AI', 'Patents', 'Retrieval'], year: 2026, hue: 45,
   },
   {
     id: 'colorectal-cancer',
@@ -111,7 +126,7 @@ window.PROJECTS = [
     description:
       'An R Shiny front end for genetic risk assessment of colorectal cancer, analysing mutations from population cohort research to determine susceptibility and inform targeted drug selection.',
     repo: 'https://github.com/medxiaorudan/ColorectalCancer',
-    status: 'research', tier: 'flagship', featured: false,
+    tier: 'flagship', featured: false,
     tags: ['R Shiny', 'Genomics', 'Risk Assessment'], year: 2023, hue: 355,
   },
   {
@@ -120,7 +135,7 @@ window.PROJECTS = [
     description:
       'Time-series demand forecasting plus a RAG docs assistant for planners. Evaluates WAPE/MAPE and exposes a FastAPI endpoint with a p95 latency target and a CI eval gate.',
     repo: 'https://github.com/medxiaorudan/DemandForecasting-SCM',
-    status: 'research', tier: 'flagship', featured: false,
+    tier: 'flagship', featured: false,
     tags: ['Python', 'FastAPI', 'Time Series', 'RAG'], year: 2025, hue: 210,
   },
   {
@@ -128,7 +143,7 @@ window.PROJECTS = [
     name: 'Breast MRI Prep',
     description: 'A preprocessing pipeline for AI applications on breast MRI data.',
     repo: 'https://github.com/medxiaorudan/BreastMRIPrep',
-    status: 'research', tier: 'flagship', featured: false,
+    tier: 'flagship', featured: false,
     tags: ['Jupyter', 'MRI', 'Preprocessing'], year: 2025, hue: 305,
   },
   {
@@ -137,26 +152,27 @@ window.PROJECTS = [
     description:
       'Breast cancer detection and prediction, able to integrate multiple batches of gene expression data across multiple platforms.',
     repo: 'https://github.com/medxiaorudan/GeneRankDetection',
-    status: 'research', tier: 'flagship', featured: false,
+    tier: 'flagship', featured: false,
     tags: ['Perl', 'Gene Expression', 'Oncology'], year: 2023, hue: 95,
   },
 
-  // ---------- Minor: smaller studies and coursework ----------
+  // ---------- Minor: hidden behind a disclosure on the projects page ----------
+  // Kept in the data rather than deleted: they are real work, they just should not
+  // compete for attention with the list above. See renderProjects('grid-minor').
   {
     id: 'llm-ner-multinerd',
     name: 'LLM NER on MultiNERD',
     description: 'An LLM fine-tuned for Named Entity Recognition on the MultiNERD dataset.',
     repo: 'https://github.com/medxiaorudan/LLM_NER_MultiNERD',
-    status: 'research', tier: 'minor', featured: false,
+    tier: 'minor', featured: false,
     tags: ['Jupyter', 'NER', 'Fine-tuning'], year: 2024, hue: 240,
   },
   {
     id: 'nlp-emotional-scoring',
     name: 'NLP Emotional Scoring',
-    description:
-      'Emotion prediction combining vector space models with an LSTM.',
+    description: 'Emotion prediction combining vector space models with an LSTM.',
     repo: 'https://github.com/medxiaorudan/NLP_AMMI_Emotional_Scoring',
-    status: 'research', tier: 'minor', featured: false,
+    tier: 'minor', featured: false,
     tags: ['Jupyter', 'NLP', 'LSTM'], year: 2023, hue: 15,
   },
   {
@@ -164,7 +180,7 @@ window.PROJECTS = [
     name: 'AI Scores in Mammography',
     description: 'Analysis of AI scores produced by the mammography exam.',
     repo: 'https://github.com/medxiaorudan/AI-scores-analysis-of-mammography',
-    status: 'research', tier: 'minor', featured: false,
+    tier: 'minor', featured: false,
     tags: ['Jupyter', 'Mammography', 'Analysis'], year: 2023, hue: 170,
   },
   // NEEDS-DESCRIPTION: the four below have no description on GitHub. The text here is
@@ -175,7 +191,7 @@ window.PROJECTS = [
     name: 'Cervical Cancer',
     description: 'An R study on cervical cancer data.',
     repo: 'https://github.com/medxiaorudan/Cervical-Cancer',
-    status: 'research', tier: 'minor', featured: false,
+    tier: 'minor', featured: false,
     tags: ['R'], year: 2023, hue: 320,
   },
   {
@@ -183,7 +199,7 @@ window.PROJECTS = [
     name: 'Type Diabetes',
     description: 'An R study on type-diabetes data.',
     repo: 'https://github.com/medxiaorudan/Type-Diabetes',
-    status: 'research', tier: 'minor', featured: false,
+    tier: 'minor', featured: false,
     tags: ['R'], year: 2023, hue: 70,
   },
   {
@@ -191,7 +207,7 @@ window.PROJECTS = [
     name: 'OpenCV for Python',
     description: 'Notebooks worked through alongside an OpenCV-for-Python book.',
     repo: 'https://github.com/medxiaorudan/OpenCV-for-Python-book',
-    status: 'research', tier: 'minor', featured: false,
+    tier: 'minor', featured: false,
     tags: ['Jupyter', 'OpenCV'], year: 2019, hue: 120,
   },
   {
@@ -199,7 +215,7 @@ window.PROJECTS = [
     name: 'Restaurant App',
     description: 'A small restaurant application.',
     repo: 'https://github.com/medxiaorudan/RestaurantApp',
-    status: 'research', tier: 'minor', featured: false,
+    tier: 'minor', featured: false,
     tags: ['App'], year: 2025, hue: 40,
   },
 ];
@@ -213,7 +229,8 @@ window.PROJECTS = [
 
 // The little favicon shown next to a live link. Returns the site's own favicon as
 // an <img>, falling back to a coloured initial-badge if `icon` is unset or the
-// image fails to load (scs currently 404s its declared favicon).
+// image fails to load (scs 404s its declared favicon; mammoscreen's is currently
+// malformed XML, so both land on the badge today).
 window.projectFavicon = function (p) {
   const letter = ((p.name || p.id).trim()[0] || '?').toUpperCase();
   const badge = function () {
@@ -235,27 +252,54 @@ window.projectFavicon = function (p) {
   return img;
 };
 
-const STATUS_LABEL = { active: 'ACTIVE', live: 'LIVE', research: 'RESEARCH' };
-
 // Build one project card. A card is a <div>, not an <a>: projects link to both a
 // live site and a repo, and anchors cannot nest — so the links live in an explicit
 // row at the bottom instead of wrapping the whole card.
 window.projectCard = function (p) {
   const card = document.createElement('div');
-  card.className = 'agent-card mini';
+  card.className = 'agent-card mini' + (p.shot ? ' showcase' : '');
   card.dataset.projectId = p.id;
+
+  // Screenshot first, so a runnable app leads with what it looks like.
+  if (p.shot) {
+    const figure = document.createElement('a');
+    figure.className = 'shot';
+    figure.href = p.url || p.repo;
+    figure.target = '_blank';
+    figure.rel = 'noopener';
+    // Hidden from assistive tech: the "Live site" link below points at the same
+    // place, and a second link to one target is noise rather than help.
+    figure.setAttribute('aria-hidden', 'true');
+    figure.tabIndex = -1;
+    const img = document.createElement('img');
+    img.src = p.shot;
+    img.alt = '';
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    if (p.shotPos) img.style.objectPosition = p.shotPos;
+    figure.append(img);
+    card.append(figure);
+  }
 
   const header = document.createElement('div');
   header.className = 'agent-header';
-  const dot = document.createElement('span');
-  dot.className = 'status-dot ' + p.status;
+  // A status is the exception, not the rule: only genuinely live things get a dot
+  // and a badge. Everything else shows a clean header (see the `status` note above).
+  if (p.status === 'live') {
+    const dot = document.createElement('span');
+    dot.className = 'status-dot live';
+    header.append(dot);
+  }
   const name = document.createElement('span');
   name.className = 'agent-name';
   name.textContent = p.name;
-  const badge = document.createElement('span');
-  badge.className = 'agent-badge badge-' + p.status;
-  badge.textContent = STATUS_LABEL[p.status] || p.status.toUpperCase();
-  header.append(dot, name, badge);
+  header.append(name);
+  if (p.status === 'live') {
+    const badge = document.createElement('span');
+    badge.className = 'agent-badge badge-live';
+    badge.textContent = 'LIVE';
+    header.append(badge);
+  }
 
   const desc = document.createElement('div');
   desc.className = 'agent-desc';
@@ -296,7 +340,16 @@ window.projectCard = function (p) {
   year.textContent = p.year;
   links.append(year);
 
-  card.append(header, desc, tags, links);
+  if (p.shot) {
+    // Showcase cards lay the screenshot and the text side by side on wide screens,
+    // so the text needs its own flex column to keep the link row bottom-aligned.
+    const body = document.createElement('div');
+    body.className = 'card-body';
+    body.append(header, desc, tags, links);
+    card.append(body);
+  } else {
+    card.append(header, desc, tags, links);
+  }
   return card;
 };
 
@@ -304,7 +357,7 @@ window.projectCard = function (p) {
 // No-ops when the container is absent, so both pages can share one call site.
 window.renderProjects = function (containerId, filter) {
   const host = document.getElementById(containerId);
-  if (!host) return;
+  if (!host) return 0;
   const list = window.PROJECTS.filter(filter || function () { return true; });
   host.textContent = '';
   list.forEach(function (p) { host.append(window.projectCard(p)); });

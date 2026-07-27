@@ -36,26 +36,32 @@
       to the source.
     </p>
 
-    <h2 class="tier-heading">Core</h2>
-    <p class="tier-sub">The agentic systems I'd want you to open first — three of them are live.</p>
+    <h2 class="tier-heading">Built &amp; shipped</h2>
+    <p class="tier-sub">Start here — three of these are live and you can open them right now.</p>
     <div class="agents-grid" id="grid-core"></div>
 
-    <h2 class="tier-heading">Research &amp; applied ML</h2>
-    <p class="tier-sub">Published and substantial projects across medical imaging, genomics and LLMs.</p>
+    <h2 class="tier-heading">Selected work</h2>
+    <p class="tier-sub">Full-stack and applied ML across medical imaging, genomics and LLMs.</p>
     <div class="agents-grid" id="grid-flagship"></div>
 
-    <h2 class="tier-heading">Smaller studies</h2>
-    <p class="tier-sub">Earlier experiments, coursework and focused analyses.</p>
-    <div class="agents-grid" id="grid-minor"></div>
+    <!-- Earlier work is collapsed rather than deleted: it is real, it just should not
+         compete for attention with the two sections above. -->
+    <details class="more-work">
+      <summary id="more-work-summary">Earlier experiments and coursework</summary>
+      <div class="agents-grid" id="grid-minor"></div>
+    </details>
   </main>
 
   <script src="projects.data.js"></script>
   <script>
-    // Three tier grids from the shared manifest. Array order inside each tier is
-    // the editorial order defined in projects.data.js — do not re-sort here.
+    // Tier grids from the shared manifest. Array order inside each tier is the
+    // editorial order defined in projects.data.js — do not re-sort here.
     renderProjects('grid-core', function (p) { return p.tier === 'core'; });
     renderProjects('grid-flagship', function (p) { return p.tier === 'flagship'; });
-    renderProjects('grid-minor', function (p) { return p.tier === 'minor'; });
+    var minorCount = renderProjects('grid-minor', function (p) { return p.tier === 'minor'; });
+    // Label the disclosure with its real count so it is honest about what it hides.
+    document.getElementById('more-work-summary').textContent =
+      'Earlier experiments and coursework (' + minorCount + ')';
   </script>
   <script src="script.js"></script>
 </body>

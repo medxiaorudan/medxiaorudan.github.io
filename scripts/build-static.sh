@@ -21,4 +21,9 @@ mkdir -p "$OUT"
 
 cp index.html projects.html projects.data.js style.css script.js 404.html "$OUT/"
 
+# Project screenshots. Copied wholesale rather than named individually so adding a
+# new `shot` to projects.data.js needs no build change.
+mkdir -p "$OUT/img/projects"
+cp img/projects/*.jpg "$OUT/img/projects/"
+
 echo "✓ Built $OUT/ ($(find "$OUT" -type f | wc -l | tr -d ' ') files)"
