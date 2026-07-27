@@ -1,0 +1,10 @@
+{
+  "name": "rudanxiao-apex",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Rudan Xiao's personal site, served at the rudanxiao.com apex.",
+  "scripts": {
+    "build": "bash scripts/build-static.sh",
+    "deploy": "npm run build && AWS_PROFILE=private PLATFORM_PREFIX=/rudanxiao ~/HobbyProjects/web-platform/scripts/deploy-app.sh www dist"
+  }
+}

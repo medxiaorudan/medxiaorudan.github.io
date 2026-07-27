@@ -165,80 +165,12 @@
       </div>
     </div>
 
-    <div class="agents-grid">
-      <a href="https://github.com/medxiaorudan/SmartCustomerService" target="_blank" class="agent-card mini">
-        <div class="agent-header">
-          <span class="status-dot deployed"></span>
-          <span class="agent-name">SmartCustomerService</span>
-          <span class="agent-badge badge-deployed">DEPLOYED</span>
-        </div>
-        <div class="agent-desc">Full-stack RAG-powered GenAI customer service</div>
-        <div class="agent-tags"><span class="tag">Python</span><span class="tag">RAG</span><span class="tag">React</span></div>
-      </a>
-      <a href="https://github.com/medxiaorudan/CodeGeneration" target="_blank" class="agent-card mini">
-        <div class="agent-header">
-          <span class="status-dot deployed"></span>
-          <span class="agent-name">CodeGeneration</span>
-          <span class="agent-badge badge-deployed">DEPLOYED</span>
-        </div>
-        <div class="agent-desc">Fine-tuned CodeLlama for task-specific C++ generation</div>
-        <div class="agent-tags"><span class="tag">CodeLlama</span><span class="tag">Fine-tuning</span><span class="tag">LLM</span></div>
-      </a>
-      <a href="https://github.com/medxiaorudan/MSSL" target="_blank" class="agent-card mini">
-        <div class="agent-header">
-          <span class="status-dot research"></span>
-          <span class="agent-name">MSSL</span>
-          <span class="agent-badge badge-research">RESEARCH</span>
-        </div>
-        <div class="agent-desc">Semi-supervised segmentation &amp; classification with resource-efficient training (MICCAI)</div>
-        <div class="agent-tags"><span class="tag">PyTorch</span><span class="tag">Medical AI</span><span class="tag">Semi-supervised</span></div>
-      </a>
-      <a href="https://github.com/medxiaorudan/RCC-VascularMorphClassify" target="_blank" class="agent-card mini">
-        <div class="agent-header">
-          <span class="status-dot research"></span>
-          <span class="agent-name">RCC-VascularMorphClassify</span>
-          <span class="agent-badge badge-research">RESEARCH</span>
-        </div>
-        <div class="agent-desc">Kidney cancer classification leveraging vascular network properties for RCC identification</div>
-        <div class="agent-tags"><span class="tag">Python</span><span class="tag">Deep Learning</span><span class="tag">Graph</span></div>
-      </a>
-      <a href="https://github.com/medxiaorudan/ColorectalCancer" target="_blank" class="agent-card mini">
-        <div class="agent-header">
-          <span class="status-dot research"></span>
-          <span class="agent-name">ColorectalCancer</span>
-          <span class="agent-badge badge-research">RESEARCH</span>
-        </div>
-        <div class="agent-desc">Genetic risk assessment for colorectal cancer — analyzing mutations for disease susceptibility</div>
-        <div class="agent-tags"><span class="tag">R Shiny</span><span class="tag">Genomics</span><span class="tag">Risk Assessment</span></div>
-      </a>
-      <a href="https://github.com/medxiaorudan/LLM_NER_MultiNERD" target="_blank" class="agent-card mini">
-        <div class="agent-header">
-          <span class="status-dot deployed"></span>
-          <span class="agent-name">LLM_NER_MultiNERD</span>
-          <span class="agent-badge badge-deployed">DEPLOYED</span>
-        </div>
-        <div class="agent-desc">LLM fine-tuned for Named Entity Recognition on the MultiNERD dataset</div>
-        <div class="agent-tags"><span class="tag">LLM</span><span class="tag">NER</span><span class="tag">Fine-tuning</span></div>
-      </a>
-      <a href="https://github.com/medxiaorudan/DemandForecasting-SCM" target="_blank" class="agent-card mini">
-        <div class="agent-header">
-          <span class="status-dot deployed"></span>
-          <span class="agent-name">DemandForecasting-SCM</span>
-          <span class="agent-badge badge-deployed">DEPLOYED</span>
-        </div>
-        <div class="agent-desc">Time-series demand forecasting with quality checks, planner help bot, and reorder optimization to meet service levels</div>
-        <div class="agent-tags"><span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">Scikit-learn</span></div>
-      </a>
-      <a href="https://github.com/medxiaorudan/MammoScreen" target="_blank" class="agent-card mini">
-        <div class="agent-header">
-          <span class="status-dot deployed"></span>
-          <span class="agent-name">MammoScreen</span>
-          <span class="agent-badge badge-deployed">DEPLOYED</span>
-        </div>
-        <div class="agent-desc">GUI-based image labeler for radiological screenings — loading, viewing, and annotating mammogram images</div>
-        <div class="agent-tags"><span class="tag">Python</span><span class="tag">Tkinter</span><span class="tag">Medical Imaging</span></div>
-      </a>
-    </div>
+    <!-- Featured projects, rendered from projects.data.js — the single source of
+         truth shared with projects.html. Add, reorder or re-tier projects there,
+         never here. Each card links to the live site (where one exists) and the source. -->
+    <div class="agents-grid" id="featured-grid"></div>
+
+    <a class="view-all" href="/projects.html">See all projects <span aria-hidden="true">&rarr;</span></a>
   </section>
 
   <!-- Skills: Tool Registry -->
@@ -338,6 +270,11 @@
     <span class="mono dim">Built with agents, coffee, and paint.</span>
   </footer>
 
+  <script src="projects.data.js"></script>
+  <script>
+    // The homepage shows only featured projects; projects.html shows everything.
+    renderProjects('featured-grid', function (p) { return p.featured; });
+  </script>
   <script src="script.js"></script>
 </body>
 </html>

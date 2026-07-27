@@ -1,0 +1,5 @@
+dist/
+node_modules/
+.omc/
+.DS_Store
+.gstack/

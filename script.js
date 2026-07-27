@@ -22,8 +22,10 @@ document.querySelectorAll('.theme-btn').forEach(btn => {
 });
 
 // Grid background + mouse effects
+// Guarded: this file is shared by index.html and projects.html, and an
+// unguarded getContext() on a missing canvas throws and kills everything below.
 const canvas = document.getElementById('gridCanvas');
-const ctx = canvas.getContext('2d');
+const ctx = canvas ? canvas.getContext('2d') : null;
 let mouseX = -1000, mouseY = -1000;
 let mouseTrail = [];
 let clickRipples = [];
@@ -221,9 +223,13 @@ function animateGrid() {
   requestAnimationFrame(animateGrid);
 }
 
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-animateGrid();
+// Every draw path dereferences `canvas`/`ctx`, so start the loop only when the
+// canvas is actually on the page.
+if (canvas) {
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+  animateGrid();
+}
 
 // Typed subtitle
 const subtitle = document.getElementById('heroSubtitle');
@@ -255,7 +261,9 @@ function typeLoop() {
   }
   setTimeout(typeLoop, speed);
 }
-setTimeout(typeLoop, 2500);
+// Only start typing where the hero exists — typeLoop() writes subtitle.textContent
+// directly, so on a page without #heroSubtitle this threw a TypeError 2.5s in.
+if (subtitle) setTimeout(typeLoop, 2500);
 
 // Scroll reveal sections
 const sections = document.querySelectorAll('.section');

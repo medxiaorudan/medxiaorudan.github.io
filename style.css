@@ -869,3 +869,181 @@ body {
   .handoff-field { flex-direction: column; gap: 0.25rem; }
   .field-key { min-width: 0; }
 }
+
+/* ==========================================================================
+   Project cards — dual links (live site + source)
+   Cards used to be <a> wrapping the whole tile. They now carry two links, and
+   anchors cannot nest, so the card is a <div> and the links sit in their own
+   row. Built by projectCard() in projects.data.js.
+   ========================================================================== */
+
+.status-dot.live { background: var(--accent-alt); box-shadow: 0 0 8px var(--accent-alt); }
+.badge-live {
+  background: rgba(0, 255, 200, 0.1);
+  color: var(--accent-alt);
+  border: 1px solid rgba(0, 255, 200, 0.25);
+}
+
+.agent-links {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.agent-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+
+.agent-link:hover { color: var(--accent); }
+.agent-link--live { color: var(--accent-alt); }
+.agent-link--live:hover { color: var(--accent); }
+
+/* Pushed right so the year always sits on the trailing edge. */
+.agent-year {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+/* The site's own favicon next to its live link, with a coloured initial-badge
+   fallback for sites that serve none (or serve a 404). */
+.lnk-fav {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.lnk-fav--badge {
+  display: inline-grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  color: hsl(var(--fav-hue, 200) 90% 70%);
+  background: hsl(var(--fav-hue, 200) 70% 50% / 0.16);
+  border: 1px solid hsl(var(--fav-hue, 200) 80% 60% / 0.35);
+}
+
+/* ==========================================================================
+   Projects page (projects.html)
+   ========================================================================== */
+
+.projects-page {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(6rem, 12vw, 9rem) clamp(1.5rem, 5vw, 4rem) 6rem;
+}
+
+.back {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  margin-bottom: 2rem;
+  transition: color 0.2s;
+}
+
+.back:hover { color: var(--accent); }
+
+.page-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 6vw, 3.4rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.page-sub {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  max-width: 60ch;
+  margin-top: 0.85rem;
+}
+
+.tier-heading {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 3.5rem 0 0.35rem;
+}
+
+.tier-sub {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+/* "See all projects" affordance on the homepage. */
+.view-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--accent);
+  text-decoration: none;
+  border: 1px solid rgba(200, 255, 0, 0.2);
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.view-all:hover {
+  background: rgba(200, 255, 0, 0.06);
+  border-color: rgba(200, 255, 0, 0.4);
+}
+
+/* --------------------------------------------------------------------------
+   Mini card layout fixes.
+   Scoped to .mini so the bespoke active-agent card on the homepage keeps its
+   own hand-tuned layout.
+   -------------------------------------------------------------------------- */
+
+/* Grid rows stretch every card to the tallest in the row, so without this the
+   link row floats wherever the text happens to end and the row reads ragged.
+   Column + auto margin pins it to the bottom edge of every card. */
+.agent-card.mini {
+  display: flex;
+  flex-direction: column;
+}
+
+.agent-card.mini .agent-links { margin-top: auto; }
+
+/* A long project name (DemandForecasting-SCM, LLM_NER_MultiNERD) used to squeeze
+   the auto-margined badge until its text clipped. Let the name wrap and shrink;
+   never let the badge do either. */
+.agent-card.mini .agent-name {
+  min-width: 0;
+  /* break-word, not anywhere: display names are prose (see projects.data.js), so a
+     mid-word break like "SmartCustomerSe/rvice" should never be needed. */
+  overflow-wrap: break-word;
+}
+
+.agent-card.mini .agent-badge {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  align-self: flex-start;
+}
