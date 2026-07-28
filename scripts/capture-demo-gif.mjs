@@ -17,6 +17,26 @@
 //   --no-diff        disable inter-frame differencing (debugging only; ~4x larger)
 //   --headed         show the browser, for developing a flow
 //
+// WHAT IS REAL AND WHAT IS AUTHORED. A demo GIF on a portfolio is a claim about a
+// product, so be clear about which is which:
+//
+//   Real — a real Chromium against the real URL, with NO network interception anywhere
+//   (no route(), no fulfill()), so nothing is mocked or stubbed. Clicks are real mouse
+//   events at real element coordinates, keypresses are real, and every pixel is a
+//   screenshot of the live app rendering its own data.
+//
+//   Authored — (1) the pointer is drawn by this tool, because headless Chromium renders
+//   no cursor: the position mirrors the real mouse, but the dot and the click ripple do
+//   not exist on the real site. (2) Pacing is chosen, not elapsed — each frame's delay is
+//   a number the flow picks, and awaitResult() deliberately compresses slow waits.
+//   (3) Mouse travel is an eased interpolation, not a human path. (4) chooseFiles answers
+//   the native file dialog programmatically, so the OS picker a real user would see never
+//   appears. (5) `viewport` is a chosen window size.
+//
+// What the app *says and does* is never synthesised. Anything else a specific flow does
+// that a viewer could misread — synthetic input files, a query picked to suit ingested
+// data — belongs in a comment on that flow. See demo-flows.mjs for the two current cases.
+//
 // Three things about this design are deliberate:
 //
 // 1. Frames carry their own delay, rather than a constant frame rate. A UI demo is
@@ -87,7 +107,13 @@ if (!Array.isArray(FLOWS)) {
 
 // 16:9 by default. The cards this feeds crop to 16/9, so recording at that ratio
 // means nothing important is lost to the crop.
-const VIEWPORT = { width: 1280, height: 720 };
+//
+// A flow may override this with `viewport`, and sometimes must: an app whose layout is a
+// centred max-width column leaves most of a 1280px frame empty, which reads as a mostly
+// blank card. Recording such an app at a width close to its own content width is not
+// cheating — it is choosing a window size, the same decision a screenshot makes. Keep
+// overrides at 16:9 or the card will crop the result.
+const DEFAULT_VIEWPORT = { width: 1280, height: 720 };
 
 // ---------------------------------------------------------------------------
 // Fake cursor
@@ -259,9 +285,9 @@ function pickPaletteSample(frames, maxPixels = 900_000) {
 
 const easeInOut = (t) => (t < 0.5 ? 2 * t * t : 1 - 2 * (1 - t) * (1 - t));
 
-function makeActions(page, rec) {
-  let cx = VIEWPORT.width / 2;
-  let cy = VIEWPORT.height - 40;
+function makeActions(page, rec, viewport) {
+  let cx = viewport.width / 2;
+  let cy = viewport.height - 40;
   // Starts hidden: the pointer should glide in when it is first needed, not sit
   // parked somewhere arbitrary while the opening frames are held.
   let cursorHidden = true;
@@ -299,9 +325,9 @@ function makeActions(page, rec) {
       // While hidden the pointer has no meaningful position, so bring it in from the
       // nearest edge instead of teleporting it or fading it in on the spot.
       if (cursorHidden) {
-        const fromLeft = x < VIEWPORT.width / 2;
-        cx = fromLeft ? -40 : VIEWPORT.width + 40;
-        cy = y + (VIEWPORT.height / 2 - y) * 0.35;
+        const fromLeft = x < viewport.width / 2;
+        cx = fromLeft ? -40 : viewport.width + 40;
+        cy = y + (viewport.height / 2 - y) * 0.35;
         cursorHidden = false;
       }
       const [sx, sy] = [cx, cy];
@@ -442,8 +468,9 @@ let failed = 0;
 
 for (const flow of flows) {
   const t0 = process.hrtime.bigint();
+  const viewport = flow.viewport || DEFAULT_VIEWPORT;
   const ctx = await browser.newContext({
-    viewport: VIEWPORT,
+    viewport,
     deviceScaleFactor: 1,
     colorScheme: flow.colorScheme || 'dark',
   });
@@ -457,7 +484,7 @@ for (const flow of flows) {
     await installCursor(page);
 
     const rec = new Recorder(page);
-    await flow.run(makeActions(page, rec));
+    await flow.run(makeActions(page, rec, viewport));
 
     const bytes = encodeGif(rec.frames, { colors: GIF_COLORS, diff: !NO_DIFF });
     const path = `${OUT_DIR}/${flow.slug}.gif`;

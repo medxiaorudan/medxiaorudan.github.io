@@ -68,6 +68,11 @@ window.PROJECTS = [
     url: 'https://smart-customer-service.rudanxiao.com/',
     repo: 'https://github.com/medxiaorudan/SmartCustomerService',
     shot: 'img/projects/smart-customer-service.jpg',
+    // Role picker → company → a real question answered from the ingested data. The
+    // question is chosen to match what is actually ingested for the `demo` company
+    // (RFC 2606, reserved TLDs); off that corpus the app answers vaguely. See the note
+    // in CLAUDE.md — the demo data is worth replacing.
+    motion: 'img/projects/smart-customer-service.gif',
     shotPos: 'center',
     // No icon: the site declares /favicon.ico but it 404s, so the badge fallback is
     // more honest than a broken image. Add the URL back once the file exists.

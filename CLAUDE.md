@@ -109,13 +109,17 @@ node scripts/verify-gif.mjs img/projects/mammoscreen.gif 8 1250                #
 
 ## Known content notes
 
-- **Smart Customer Service has no demo GIF, and the blocker is its data.** The flow records
-  fine, and the ~17s reply latency is handled (`awaitResult()` shows a short "thinking" beat,
-  then the real answer). But the `demo` company's ingested corpus is placeholder RFC text
-  about reserved TLDs, so "What does this company do?" returns a paragraph about Donald E.
-  Eastlake and DNS testing. Ingest a real company description first — `SmartCustomerService`
-  is the one Rudan repo we can push to — then add the flow and the `motion` field. Tracked in
-  `web-platform/TODO.md`.
+- **Smart Customer Service's demo GIF depends on a question chosen to fit its data.** The
+  `demo` company's ingested corpus is placeholder RFC 2606 text about reserved TLDs. Asked
+  "What does this company do?" it returns a paragraph about Donald E. Eastlake and DNS
+  testing; asked "Which domain names are reserved for documentation and examples?" it gives a
+  correct, well-formed answer, which is the question the flow asks. That is a demo query
+  matched to demo data, not a doctored result — but it does mean **the card is only as good
+  as that one question**. Ingest a real company description (`SmartCustomerService` is the one
+  Rudan repo we can push to) and the flow can ask something a visitor would actually ask.
+  Tracked in `web-platform/TODO.md`.
+- The SCS reply genuinely takes 7-17s. `awaitResult()` records a short waiting beat and then
+  the real answer, so **GIF time is not elapsed time on that card**. The answer is untouched.
 - The eight images in the art section are **hotlinked from `gallery095.wordpress.com`** — an
   uncontrolled external dependency on the most visual part of the page. Worth vendoring.
 - There is no favicon. The router answers `/favicon.ico` from the platform-owned

@@ -56,6 +56,52 @@ export const FLOWS = [
   },
 
   {
+    // Role picker → company → ask a question → real answer. The whole point of the app
+    // is the answer, so this flow has to include one.
+    //
+    // Two honest caveats, because this is the only flow where the app is slow and the
+    // only one whose output depends on ingested data:
+    //
+    // 1. The reply really takes 7-9s. `awaitResult` shows a short waiting beat and then
+    //    the genuine answer, so GIF time is not real time here. The answer is not
+    //    touched — only the wait is shortened.
+    // 2. The question is chosen to suit what is actually ingested for the `demo`
+    //    company, which today is RFC 2606 (reserved TLDs). Asked something outside that
+    //    corpus, the app answers vaguely — see the note in CLAUDE.md. This is a demo
+    //    query matched to demo data, not a doctored result.
+    slug: 'smart-customer-service',
+    url: 'https://smart-customer-service.rudanxiao.com/',
+    colorScheme: 'light',
+    // The chat is a centred `max-w-4xl` (896px) column, so at the default 1280 width the
+    // frame is mostly empty white and the card reads as blank. Recorded just wider than
+    // the app's own content instead. Still 16:9, because the card crops to that.
+    viewport: { width: 1024, height: 576 },
+    run: async (a) => {
+      await a.hold(1100); // the role picker
+
+      await a.tap('text="User"', { move: { frames: 6 }, until: 'text=Select Company', after: 1200 });
+      await a.tap('text="demo"', { move: { frames: 5 }, until: 'textarea', after: 1200 });
+
+      await a.tap('textarea', { move: { frames: 5 }, settle: 1, after: 350 });
+      await a.type('textarea', 'Which domain names are reserved for documentation and examples?', {
+        chunk: 4,
+        delay: 55,
+      });
+
+      // The assistant's messages are the left-aligned bubbles and the greeting is
+      // already one of them, so the reply is the second — a selector that does not
+      // depend on knowing what the answer will say.
+      const reply = ':nth-match(div.flex.justify-start, 2)';
+      await a.tap('button:has-text("Send")', { move: { frames: 5 }, settle: 2, after: 250 });
+      // The arriving reply pushes the input row down, so a pointer left at the Send
+      // button's old coordinates ends up floating next to it. Nothing else here is
+      // mouse-driven, so retire it.
+      await a.hideCursor();
+      await a.awaitResult(reply, { spinnerFrames: 5, spinnerDelay: 220, after: 3200 });
+    },
+  },
+
+  {
     // Load images, then label them with the keyboard. The story is that this is a real
     // review tool and the files never leave the device, so the file choice is recorded
     // rather than injected invisibly.
