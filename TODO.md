@@ -7,7 +7,7 @@ the site's own content and copy.
 **Push access — changed 2026-07-28.** We are now a collaborator on
 `medxiaorudan/medxiaorudan.github.io` (`push: true`, no admin). The remote is SSH over the
 lolispo key. Work goes up on a branch for Rudan to merge — `main` is hers, so don't push it
-without asking. `CLAUDE.md` still describes the repo as read-only and needs updating.
+without asking. `CLAUDE.md` was updated to match the same day.
 
 ## Content
 

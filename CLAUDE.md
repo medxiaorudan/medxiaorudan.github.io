@@ -5,23 +5,29 @@ hosting layer, and also (for now) at `https://medxiaorudan.github.io/` via GitHu
 
 Design spec: `~/HobbyProjects/web-platform/docs/superpowers/specs/2026-07-28-rudanxiao-apex-hosting-design.md`
 
-## ⚠️ This clone is read-only
+## ⚠️ This is Rudan's repo — push to branches, never to `main`
 
-Neither local GitHub identity can push here — this is **Rudan's** repo and we are not
-collaborators (verified by REST *and* `git push --dry-run` over SSH with both keys; SSH is not
-a workaround, permissions are per-account). Only `medxiaorudan/SmartCustomerService` has push
-access.
+**Changed 2026-07-28: we now have push access.** The Lolispo account is a collaborator
+(`push: true`, `admin: false`, verified via REST). This file previously said the clone was
+read-only; that is no longer true.
 
-Consequences:
-
-- **Never assume a commit can be pushed.** Commit locally if useful, but landing anything
-  upstream needs Rudan (send a patch, as with SmartCustomerService) or new collaborator access.
-- **Every file added here is deliberately additive** — `package.json`, `package-lock.json`,
-  `scripts/`, `404.html`, `.gitignore`, this file. The repo has none of them, so `git pull` can
-  never conflict on them while Rudan keeps committing to `index.html` / `style.css` / `script.js`.
-  **Keep it that way**: prefer a new file over editing a tracked one.
+- **The remote is SSH over the lolispo key.** `core.sshCommand` is set locally to
+  `ssh -i ~/.ssh/lolispo-key -o IdentitiesOnly=yes` and `origin` is
+  `git@github.com:medxiaorudan/medxiaorudan.github.io.git`. The default `gh` is the Tendium
+  account — use `gh1` for any API work here.
+- **Never push `main`.** It is Rudan's default branch and she commits to it directly. Push a
+  feature branch and let her merge, even though nothing technically stops a fast-forward.
+- **No admin.** So no branch protection, settings, or Actions-secret changes — and
+  push-to-deploy (Phase B) still cannot be set up from here.
+- **Prefer a new file over editing a tracked one, still.** Not because we cannot push any
+  more, but because Rudan keeps committing to `index.html` / `style.css` / `script.js` and
+  every edit we make to those is a `git pull` conflict waiting to happen. Our additive files
+  — `package.json`, `scripts/`, `404.html`, `projects.data.js`, `projects.html`, `TODO.md`,
+  this one — can never conflict.
 - Content edits to `index.html` / `style.css` / `script.js` *will* conflict on `git pull`.
   That's expected — just know it before editing.
+- `medxiaorudan/SmartCustomerService` also has push access. `EnterpriseResilienceAgent` and
+  `MammoScreen` do **not** — those still need a patch sent to Rudan.
 
 ## Deploy
 
@@ -44,7 +50,8 @@ AWS_PROFILE=private PLATFORM_PREFIX=/rudanxiao \
   deploys this site over the **petterbuilds.com** apex.
 - **CI cannot deploy this yet.** The GitHub OIDC role grants only `/platform/*` and the
   petterbuilds bucket, so non-default instances are Mode 1 only. Making push-to-deploy work is
-  Phase B in the spec (and needs push + admin on this repo).
+  Phase B in the spec. We have push on this repo as of 2026-07-28 but **not admin**, so the
+  Actions secrets and workflow permissions it needs are still out of reach.
 - RUM analytics is skipped by design on this instance — one monitor, validated against
   petterbuilds.com.
 
@@ -132,7 +139,10 @@ node scripts/verify-gif.mjs img/projects/mammoscreen.gif 8 1250                #
     more, but it is still publicly selectable.
 - The eight images in the art section are **hotlinked from `gallery095.wordpress.com`** — an
   uncontrolled external dependency on the most visual part of the page. Worth vendoring.
-- There is no favicon. The router answers `/favicon.ico` from the platform-owned
-  `_icons/<app-id>.svg`, which doesn't exist on this instance yet. A shared monogram for all
-  Rudan sites is tracked in `web-platform/TODO.md` — deliberately not solved in this repo, to
-  keep our footprint additive.
+- **The favicon now resolves** (changed 2026-07-28; this used to read "there is no favicon").
+  The router answers `/favicon.ico` from the platform-owned `_icons/<app-id>.svg`, and those
+  now exist — the apex and `smart-customer-service` each serve a distinct per-app monogram,
+  not a shared one. Still owned by `web-platform`, not this repo, so our footprint stays
+  additive. Two hosts remain unfixed: `era-api` serves its SPA `index.html` from
+  `/favicon.ico` (a 200 that will not decode), and `mammoscreen` ships its own real
+  `favicon.svg` rather than using the platform path.

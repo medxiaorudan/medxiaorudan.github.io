@@ -76,8 +76,12 @@ window.PROJECTS = [
     // rather than staged. See CLAUDE.md for the credential handling and the caveats.
     motion: 'img/projects/smart-customer-service.gif',
     shotPos: 'center',
-    // No icon: the site declares /favicon.ico but it 404s, so the badge fallback is
-    // more honest than a broken image. Add the URL back once the file exists.
+    // No icon, but the reason expired: /favicon.ico used to 404, and as of 2026-07-28 it
+    // serves a real per-app monogram (the platform router now answers from
+    // _icons/<app-id>.svg, which finally exists on this instance). Setting
+    // `icon: 'https://smart-customer-service.rudanxiao.com/favicon.ico'` would work —
+    // left on the badge only because nobody has decided whether the platform monogram
+    // or the coloured initial reads better in the link row.
     status: 'live', tier: 'core', featured: true,
     tags: ['Python', 'React', 'RAG', 'DeepSeek'], year: 2026, hue: 265,
   },
@@ -99,7 +103,7 @@ window.PROJECTS = [
     // not decode — fixed at source and redeployed 2026-07-28.
     icon: 'https://mammoscreen.rudanxiao.com/favicon.svg',
     status: 'live', tier: 'core', featured: true,
-    tags: ['TypeScript', 'DICOM', 'Medical Imaging', 'Browser-only'], year: 2026, hue: 330,
+    tags: ['TypeScript', 'DICOM', 'Medical Imaging', 'Browser-only'], year: 2023, hue: 330,
   },
   {
     id: 'mssl',
@@ -242,14 +246,17 @@ window.PROJECTS = [
 // ---------------------------------------------------------------------------
 // Rendering helpers, shared by index.html and projects.html so both pages
 // render identically. Kept here rather than in script.js on purpose: this file
-// is ours, script.js is upstream's, and every edit to a tracked file is a
-// future merge conflict. See CLAUDE.md.
+// is ours and script.js is upstream's. That mattered more when we could not push
+// at all; we are collaborators now, but Rudan still commits directly to
+// index.html / style.css / script.js, so keeping our logic here still avoids
+// needless conflicts. See CLAUDE.md.
 // ---------------------------------------------------------------------------
 
 // The little favicon shown next to a live link. Returns the site's own favicon as
 // an <img>, falling back to a coloured initial-badge if `icon` is unset or the
-// image fails to load (scs 404s its declared favicon; mammoscreen's is currently
-// malformed XML, so both land on the badge today).
+// image fails to load. The fallback is still load-bearing — ERA serves its SPA
+// index HTML from /favicon.ico, which passes a status check and fails to decode —
+// so keep the onerror path even as individual sites gain real icons.
 window.projectFavicon = function (p) {
   const letter = ((p.name || p.id).trim()[0] || '?').toUpperCase();
   const badge = function () {
