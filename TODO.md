@@ -93,6 +93,14 @@ records versus authors is written up in `web-platform/TODO.md` ("Demo GIFs for a
   exceeds it. The other two are within budget (mammoscreen 124 KB, ERA 293 KB). The scs flow
   is the longest of the three — admin login, then ingest, then a question and answer — so the
   cheapest cut is steps, most likely the login beat. Measured 2026-07-28 after a re-record.
+  **Careful which step goes, though.** Dropping the login/ingest half is what would save the
+  most, but it is also the only reason this card beats a chat-only clip: watching three URLs
+  go in and become answerable is what shows a RAG pipeline rather than any chatbot. Cheaper
+  cuts that keep the story, in order: coarsen the URL typing (`chunk: 12` → one frame per
+  ~20 chars), drop `move.frames` from 4 to 3 across the flow, and shorten the two 3.4s held
+  frames at the end. Each click costs ~10-14 frames and each `chunk` one frame, so budget by
+  counting. Do **not** reach for `--colors`: 128 was measured at only 10% smaller for real
+  damage to anti-aliased text.
 
 ## Linked apps (not this repo, but they degrade this page)
 
