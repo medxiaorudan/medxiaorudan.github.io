@@ -242,6 +242,7 @@ const subtitle = document.getElementById('heroSubtitle');
 const phrases = [
   'Agentic AI architect.',
   'Multi-agent orchestration.',
+  'Full-stack: React to FastAPI.',
   'PhD — deep problem solver.',
   'From research to production.',
 ];

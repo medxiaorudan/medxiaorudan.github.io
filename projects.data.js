@@ -48,7 +48,7 @@ window.PROJECTS = [
     id: 'enterprise-resilience-agent',
     name: 'Enterprise Resilience Agent',
     description:
-      'A multicloud resilience platform that detects failures early, explains likely causes, recommends safe remediation, and recovers through controlled, auditable runbooks.',
+      'A multicloud resilience platform that detects failures early, explains likely causes, recommends safe remediation, and recovers through controlled, auditable runbooks. Full-stack monorepo: React front end, a TypeScript API, PostgreSQL and Redis, with type contracts shared end to end.',
     url: 'https://era-api.rudanxiao.com/',
     repo: 'https://github.com/medxiaorudan/EnterpriseResilienceAgent',
     shot: 'img/projects/enterprise-resilience-agent.jpg',
