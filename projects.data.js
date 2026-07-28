@@ -68,10 +68,12 @@ window.PROJECTS = [
     url: 'https://smart-customer-service.rudanxiao.com/',
     repo: 'https://github.com/medxiaorudan/SmartCustomerService',
     shot: 'img/projects/smart-customer-service.jpg',
-    // Role picker → company → a real question answered from the ingested data. The
-    // question is chosen to match what is actually ingested for the `demo` company
-    // (RFC 2606, reserved TLDs); off that corpus the app answers vaguely. See the note
-    // in CLAUDE.md — the demo data is worth replacing.
+    // The whole product in one pass: an admin logs in, points the app at three
+    // hybridity.ai pages, the app ingests them, then a visitor asks Hybridity AB's
+    // assistant a question and gets an answer grounded in what was just ingested.
+    // Showing the ingest is the point — a chat-only clip could be any chatbot.
+    // `Hybridity AB` is a real company on the live instance, so this is reproducible
+    // rather than staged. See CLAUDE.md for the credential handling and the caveats.
     motion: 'img/projects/smart-customer-service.gif',
     shotPos: 'center',
     // No icon: the site declares /favicon.ico but it 404s, so the badge fallback is
