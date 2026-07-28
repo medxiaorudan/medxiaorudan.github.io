@@ -38,13 +38,18 @@ records versus authors is written up in `web-platform/TODO.md` ("Demo GIFs for a
 
 ## Linked apps (not this repo, but they degrade this page)
 
-- [ ] 🧑 **`smart-customer-service` answers off-topic on the demo corpus.** Asking the live
-  demo "What does your company do?" returns an answer about `Eastlake & Panitz`, reserved
-  top-level DNS names and `.example`/`.test` — the demo company's ingested corpus is an RFC.
-  The RAG is working correctly; the corpus just makes the app look broken to anyone who
-  follows the "Live site" link from this portfolio. Loading a corpus that matches the pitch
-  would fix the first impression. Repo: `medxiaorudan/SmartCustomerService` (we *do* have
-  push access to that one).
+- [ ] 🧑 **`smart-customer-service`'s `demo` company still answers off-topic.** Asking it
+  "What does your company do?" returns an answer about `Eastlake & Panitz`, reserved
+  top-level DNS names and `.example`/`.test` — that company's ingested corpus is an RFC. The
+  RAG is working correctly; the corpus just makes the app look broken.
+  **Partly addressed 2026-07-28:** a second company, `Hybridity AB`, was ingested into the
+  live instance from three `hybridity.ai` pages, and it answers well — that is what the
+  card's GIF records, and it is a real selectable company rather than a staged one. So a
+  visitor following the "Live site" link now sees a picker with one good company and one bad
+  one. What remains is deleting or re-ingesting `demo`, which has no admin path: companies are
+  directories, `get_companies` is `os.listdir("./data/")`, and there is no delete endpoint, so
+  it is `rm -rf /srv/scs/data/demo` on the box (or an upload that overwrites it).
+  Repo: `medxiaorudan/SmartCustomerService` (we *do* have push access to that one).
 
 - [ ] 🧑 **`smart-customer-service` serves no page title** — 67/100 on deployed health, the
   only sub-100 site on rudanxiao. Surfaced by `web-platform/repo-admin` (`npm run health`),
