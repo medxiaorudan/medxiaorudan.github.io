@@ -64,7 +64,7 @@ window.PROJECTS = [
     id: 'smart-customer-service',
     name: 'Smart Customer Service',
     description:
-      'A RAG-powered GenAI application: administrators securely manage company data, and users hold company-specific conversations — falling back to a base LLM when no data is available.',
+      'A RAG-powered GenAI application: administrators securely manage company data, and users hold company-specific conversations, falling back to a base LLM when no data is available.',
     url: 'https://smart-customer-service.rudanxiao.com/',
     repo: 'https://github.com/medxiaorudan/SmartCustomerService',
     shot: 'img/projects/smart-customer-service.jpg',
@@ -76,12 +76,12 @@ window.PROJECTS = [
     // rather than staged. See CLAUDE.md for the credential handling and the caveats.
     motion: 'img/projects/smart-customer-service.gif',
     shotPos: 'center',
-    // No icon, but the reason expired: /favicon.ico used to 404, and as of 2026-07-28 it
-    // serves a real per-app monogram (the platform router now answers from
-    // _icons/<app-id>.svg, which finally exists on this instance). Setting
-    // `icon: 'https://smart-customer-service.rudanxiao.com/favicon.ico'` would work —
-    // left on the badge only because nobody has decided whether the platform monogram
-    // or the coloured initial reads better in the link row.
+    // Served by the platform, not by the app: the CloudFront router rewrites any
+    // /favicon.ico to /_icons/<app-id>.svg in the rudanxiao-apps bucket, where
+    // smart-customer-service.svg is a generated per-app monogram. So this needs nothing
+    // from the Next.js app or the box it runs on. It used to 404 because that object
+    // did not exist yet; it was added 2026-07-28.
+    icon: 'https://smart-customer-service.rudanxiao.com/favicon.ico',
     status: 'live', tier: 'core', featured: true,
     tags: ['Python', 'React', 'RAG', 'DeepSeek'], year: 2026, hue: 265,
   },
@@ -89,7 +89,7 @@ window.PROJECTS = [
     id: 'mammoscreen',
     name: 'MammoScreen',
     description:
-      'Review and label mammography images, including DICOM. Runs entirely in the browser — images never leave your device.',
+      'Review and label mammography images, including DICOM. Runs entirely in the browser, so images never leave your device.',
     url: 'https://mammoscreen.rudanxiao.com/',
     repo: 'https://github.com/medxiaorudan/MammoScreen',
     shot: 'img/projects/mammoscreen.jpg',
@@ -118,7 +118,7 @@ window.PROJECTS = [
     id: 'rcc-vascular-morph-classify',
     name: 'RCC Vascular Morphology',
     description:
-      'Kidney cancer classification that uniquely leverages vascular network properties for RCC identification — Python for ML, MATLAB for advanced feature extraction.',
+      'Kidney cancer classification that uniquely leverages vascular network properties for RCC identification. Python for ML, MATLAB for advanced feature extraction.',
     repo: 'https://github.com/medxiaorudan/RCC-VascularMorphClassify',
     tier: 'core', featured: true,
     tags: ['MATLAB', 'Python', 'Deep Learning', 'Oncology'], year: 2023, hue: 285,
@@ -138,7 +138,7 @@ window.PROJECTS = [
     id: 'prior-art-discovery-agent',
     name: 'Prior Art Discovery Agent',
     description:
-      'An agentic system that takes a patent number and returns a ranked list of candidate prior-art references, each with supporting evidence for how it maps to the patent’s claims.',
+      'An agentic system that takes a patent number and returns a ranked list of candidate prior-art references, each with supporting evidence for how it maps to the patent\'s claims.',
     repo: 'https://github.com/medxiaorudan/PriorArtDiscoveryAgent',
     tier: 'flagship', featured: false,
     tags: ['Python', 'Agentic AI', 'Patents', 'Retrieval'], year: 2026, hue: 45,

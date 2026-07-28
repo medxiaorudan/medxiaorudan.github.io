@@ -255,7 +255,10 @@ body {
 
 /* Sections */
 .section {
-  padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 5vw, 6rem);
+  /* Vertical rhythm tightened from clamp(4rem, 8vw, 8rem): with six sections the old
+     padding stacked to nearly a full viewport of empty space between chapters on a
+     desktop, which read as the page having ended. Horizontal padding is unchanged. */
+  padding: clamp(2.5rem, 5vw, 5rem) clamp(1.5rem, 5vw, 6rem);
   position: relative;
   z-index: 1;
 }

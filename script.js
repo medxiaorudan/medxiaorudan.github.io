@@ -243,7 +243,7 @@ const phrases = [
   'Agentic AI architect.',
   'Multi-agent orchestration.',
   'Full-stack: React to FastAPI.',
-  'PhD — deep problem solver.',
+  'PhD. Deep problem solver.',
   'From research to production.',
 ];
 let phraseIdx = 0, charIdx = 0, deleting = false;
