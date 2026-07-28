@@ -46,27 +46,21 @@ without asking. `CLAUDE.md` was updated to match the same day.
   PhD work from the 2019–2023 era — `created_at` would *understate* them, and those are two
   of the six core cards. **The three 2018 repos** (Colorectal, Cervical, Type-Diabetes) sit
   untouched for five years and then get a 2023 push; rendering `2018–2023` implies five
-  years of sustained work on what may be a short study. So: use the table as a starting
-  point, but the PhD-era entries need real dates from Rudan (🧑) before anything ships.
-  Safe to auto-fill only where `created_at` and the work plausibly coincide — the 2024+
-  repos.
+  years of sustained work on what may be a short study.
 
-- [ ] 🧑 **Does the Hybridity timeline entry get a full-stack sentence?** The 2024-Present
-  node in `index.html` still describes only the AI work. The rest of the site was reframed
-  as "AI *and* full-stack" on 2026-07-28, and every other full-stack claim is backed by a
-  repo we can point at — ERA (`apps/web`, 22 commits, hers) and SmartCustomerService
-  (Next.js front end, 13 commits, hers). The Hybridity entry is the one claim with no public
-  repo behind it, so the sentence was deliberately **not** written pending Rudan confirming
-  she owned frontend there. Draft held for her: "…for compliance-focused AI workflows, from
-  the operator-facing interface down to the services behind it." Ask before adding; it is the
-  one line on the page that could not be defended in an interview if wrong.
+  **Petter confirmed the repo dates on 2026-07-28, so this is not blocked on Rudan and needs
+  no task in her queue.** The table above is the reference. What is left is the judgement call
+  per card: where `created_at` and the work plausibly coincide (the 2024+ repos) it can be
+  used directly; for the PhD-era entries, pick the year the *work* happened rather than the
+  year the repo appeared.
 
-- [ ] 🧑 **Four projects have placeholder descriptions.** `Cervical Cancer`,
+- [ ] **Four projects have placeholder descriptions.** `Cervical Cancer`,
   `Type Diabetes`, `OpenCV for Python` and `Restaurant App` have no description on GitHub,
   so the text in `projects.data.js` states only what the repo name and primary language
   show — nothing about method or result is inferred. Marked `NEEDS-DESCRIPTION` at the entry.
-  Needs real summaries from Rudan. All four sit behind the collapsed "Earlier experiments"
-  disclosure, so they are low-visibility.
+  All four sit behind the collapsed "Earlier experiments" disclosure, so they are
+  low-visibility and this is not urgent. **Not a task for Rudan's queue** — Petter can ask her
+  in conversation if it ever matters. Update them then.
 
 - [ ] **Decide the "Built & shipped" heading.** That section (`projects.html`) now holds two
   PhD research projects (MSSL, RCC Vascular Morphology) alongside the three runnable apps,
@@ -174,3 +168,7 @@ records versus authors is written up in `web-platform/TODO.md` ("Demo GIFs for a
   `_icons/smart-customer-service.svg`, so nothing was needed from the Next.js app.
 - [x] Push access: we are a collaborator as of 2026-07-28. `CLAUDE.md`'s "this clone is
   read-only" section and three other expired comments were rewritten to match.
+- [x] **Hybridity timeline entry now names the full-stack half** — "…for compliance-focused AI
+  workflows, from the operator-facing interface down to the services behind it." Held back
+  initially because it was the one full-stack claim on the page with no public repo to verify
+  it against; Rudan confirmed via Petter on 2026-07-28 that she worked on the frontend there.
