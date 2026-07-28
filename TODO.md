@@ -51,6 +51,16 @@ without asking. `CLAUDE.md` was updated to match the same day.
   Safe to auto-fill only where `created_at` and the work plausibly coincide — the 2024+
   repos.
 
+- [ ] 🧑 **Does the Hybridity timeline entry get a full-stack sentence?** The 2024-Present
+  node in `index.html` still describes only the AI work. The rest of the site was reframed
+  as "AI *and* full-stack" on 2026-07-28, and every other full-stack claim is backed by a
+  repo we can point at — ERA (`apps/web`, 22 commits, hers) and SmartCustomerService
+  (Next.js front end, 13 commits, hers). The Hybridity entry is the one claim with no public
+  repo behind it, so the sentence was deliberately **not** written pending Rudan confirming
+  she owned frontend there. Draft held for her: "…for compliance-focused AI workflows, from
+  the operator-facing interface down to the services behind it." Ask before adding; it is the
+  one line on the page that could not be defended in an interview if wrong.
+
 - [ ] 🧑 **Four projects have placeholder descriptions.** `Cervical Cancer`,
   `Type Diabetes`, `OpenCV for Python` and `Restaurant App` have no description on GitHub,
   so the text in `projects.data.js` states only what the repo name and primary language
@@ -78,6 +88,12 @@ just belt-and-braces. `shotPos` anchors the still's crop (cards crop hard: a das
 Recorder: the global `demo-gif` skill plus this repo's `tools/demo-gif/`, `npm run gifs`; what it
 records versus authors is written up in `web-platform/TODO.md` ("Demo GIFs for app cards").
 
+- [ ] **`smart-customer-service.gif` is 502 KB, over this repo's own ceiling.** `CLAUDE.md`
+  sets ~400 KB for homepage GIFs and says to *cut steps rather than quality* when a flow
+  exceeds it. The other two are within budget (mammoscreen 124 KB, ERA 293 KB). The scs flow
+  is the longest of the three — admin login, then ingest, then a question and answer — so the
+  cheapest cut is steps, most likely the login beat. Measured 2026-07-28 after a re-record.
+
 ## Linked apps (not this repo, but they degrade this page)
 
 - [ ] 🧑 **`smart-customer-service`'s `demo` company still answers off-topic.** Asking it
@@ -97,6 +113,27 @@ records versus authors is written up in `web-platform/TODO.md` ("Demo GIFs for a
   only sub-100 site on rudanxiao. Surfaced by `web-platform/repo-admin` (`npm run health`),
   so it re-appears on every run until fixed.
 
+- [ ] **ERA's card has no favicon, and one object would fix it.** The CloudFront router
+  rewrites any `/favicon.ico` to `/_icons/<app-id>.svg` in `s3://rudanxiao-apps/_icons/`
+  (`web-platform/cf-functions/router.js:70`). That prefix holds only `mammoscreen.svg`,
+  `smart-customer-service.svg` and `www.svg`, so `era-api` falls through to the SPA's own
+  `index.html` — a 200 that a browser cannot decode, which is exactly why
+  `projects.data.js`'s ERA entry omits `icon` and lands on the coloured badge. Generating
+  `era-api.svg` into that bucket is the whole fix; the `icon` line then mirrors the one added
+  for scs on 2026-07-28. Nothing is needed from the ERA repo, and we do **not** need push
+  access there for it. Offered but not decided.
+
+- [ ] 🧑 **ERA accepts unauthenticated demo identities outside demo mode.** `x-era-user` /
+  `x-era-role` headers name any user in the directory — including admin — with no token or
+  signature, on a system whose purpose is restarting real infrastructure.
+  `era-api.rudanxiao.com` is publicly reachable. A gate for this was written locally
+  (`assertDemoAuthAllowed()`, requiring `APP_ENVIRONMENT=demo` or `ERA_ALLOW_DEMO_AUTH=true`)
+  but **deliberately scrapped on 2026-07-28** — decision was to fix it on Rudan's end
+  instead, so this is hers to do, not ours to re-land. Recoverable from the reflog at
+  `877f4c7` in the local `EnterpriseResilienceAgent` clone (~90 days) if the shape is useful
+  as a reference. The real fix is token verification: `jose` is already a dependency and the
+  OIDC plumbing exists for MCP in `apps/api/src/mcp/http-auth.ts`.
+
 ## Done
 
 - [x] Apex live at `https://rudanxiao.com/` via web-platform tier 1 / Mode 1 (`npm run deploy`,
@@ -110,3 +147,22 @@ records versus authors is written up in `web-platform/TODO.md` ("Demo GIFs for a
   `typeLoop` dereferencing a missing `#heroSubtitle`) — both broke any second page.
 - [x] Canvas theme matched to the CSS palette; it now reads `data-theme` instead of
   hardcoding `matrix` over a Tron palette.
+- [x] **Profile reframed as AI *and* full-stack** (2026-07-28). The prose was ~95% AI while
+  the tool registry listed no frontend at all. Added a `WEB` tool group (typescript, react,
+  next_js, vite), renamed `OPS Infrastructure` to `Backend & Infra`, added `redis`, split the
+  handoff `capabilities` field into `ai.stack` / `app.stack`, retitled to `AI Engineer ·
+  Full-Stack`, rewrote the bio, and named ERA's architecture in its description. Ratio held
+  at roughly 70/30 AI-to-full-stack on purpose: the PhD and medical-imaging spine is the
+  differentiator, and "full-stack AI engineer" is a far more crowded position.
+- [x] `#work` moved ahead of `#journey`; sections renumbered 01-06 and the nav reordered.
+  `journey.log()` had been labelled with a bare dash where every other section has a number,
+  so it took `03` and the dash went with it.
+- [x] Inter-chapter spacing cut twice, `clamp(4rem, 8vw, 8rem)` to `clamp(1.5rem, 3vw, 3rem)`.
+  The gap a reader sees is *double* the padding, so desktop went 16rem to 6rem.
+- [x] Em dashes removed from all visible copy (titles, meta, bio, timeline, terminal line,
+  art intro, tier subs, three project descriptions), rewritten as colons/full stops rather
+  than swapped for another dash. Code comments still have them; they are not copy.
+- [x] scs card shows its real favicon. It is served by the platform router from
+  `_icons/smart-customer-service.svg`, so nothing was needed from the Next.js app.
+- [x] Push access: we are a collaborator as of 2026-07-28. `CLAUDE.md`'s "this clone is
+  read-only" section and three other expired comments were rewritten to match.
