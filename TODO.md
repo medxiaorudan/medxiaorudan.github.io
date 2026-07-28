@@ -62,12 +62,6 @@ without asking. `CLAUDE.md` was updated to match the same day.
   low-visibility and this is not urgent. **Not a task for Rudan's queue** — Petter can ask her
   in conversation if it ever matters. Update them then.
 
-- [ ] **Decide the "Built & shipped" heading.** That section (`projects.html`) now holds two
-  PhD research projects (MSSL, RCC Vascular Morphology) alongside the three runnable apps,
-  because they were promoted into it. They *were* built, so it is not wrong, but if the
-  heading was meant to signal "you can open this", it has drifted. `Highlights` or
-  `Selected builds` would cover the mix. One-line change; raised but never decided.
-
 - [ ] **Vendor the art images.** All eight images in the `#art` section are hotlinked from
   `gallery095.wordpress.com` — an uncontrolled external dependency on the most visual part
   of the page. If those URLs move, the section breaks silently.
