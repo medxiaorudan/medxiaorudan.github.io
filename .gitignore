@@ -3,3 +3,4 @@ node_modules/
 .omc/
 .DS_Store
 .gstack/
+.demo-assets/

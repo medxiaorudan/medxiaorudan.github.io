@@ -74,8 +74,48 @@ aws s3 ls s3://rudanxiao-apps/www/ --profile private                            
 
 The last three are the regression checks for the `--delete` trap above.
 
+## Demo GIFs for the live apps
+
+The showcase cards can lead with a recorded navigation flow instead of a still. Regenerate
+with:
+
+```bash
+npm run gifs                                   # all flows
+node scripts/capture-demo-gif.mjs --flows scripts/demo-flows.mjs mammoscreen   # just one
+node scripts/verify-gif.mjs img/projects/mammoscreen.gif 8 1250                # review it
+```
+
+- `scripts/capture-demo-gif.mjs` is the **engine** and is deliberately site-agnostic — it
+  takes `--flows <file>`. It is meant to be promoted to `web-platform/scripts/` and shared
+  with petterbuilds.com; tracked in `web-platform/TODO.md`. Keep site knowledge out of it
+  so that promotion stays a copy.
+- `scripts/demo-flows.mjs` holds the per-app steps. A flow's `slug` **must** match the
+  project `id` in `projects.data.js`, because that is what makes the output land at
+  `img/projects/<slug>.gif`, which is what `motion` points at.
+- **The GIFs are committed; they are not built at deploy time.** Recording drives real
+  browsers against the *live* sites, so a deploy that regenerated them would depend on
+  three other deployments being healthy. `build-static.sh` only copies them.
+- MammoScreen needs input images, so `npm run gifs` first generates synthetic phantoms
+  into `.demo-assets/` (gitignored — 5 MB of derivable pixels). They are synthetic on
+  purpose: the app's own footer says to use anonymized or synthetic images only, and the
+  repo's real DICOM fixtures are 80×48 correctness probes that look like a broken image.
+- Size discipline matters — these sit on the homepage. Two levers do the work: per-frame
+  delays (motion gets short frames, "read this" moments get one long-held frame) and
+  inter-frame differencing (unchanged pixels written transparent with dispose=1). The
+  latter is worth ~4x: the ERA flow is 287 KB where a naive encode of identical pixels is
+  2062 KB. If a GIF comes out over ~400 KB, cut steps rather than quality.
+- `motion` never replaces `shot`. The still is served to `prefers-reduced-motion: reduce`
+  and is the `onerror` fallback, so every animated card needs both.
+
 ## Known content notes
 
+- **Smart Customer Service has no demo GIF, and the blocker is its data.** The flow records
+  fine, and the ~17s reply latency is handled (`awaitResult()` shows a short "thinking" beat,
+  then the real answer). But the `demo` company's ingested corpus is placeholder RFC text
+  about reserved TLDs, so "What does this company do?" returns a paragraph about Donald E.
+  Eastlake and DNS testing. Ingest a real company description first — `SmartCustomerService`
+  is the one Rudan repo we can push to — then add the flow and the `motion` field. Tracked in
+  `web-platform/TODO.md`.
 - The eight images in the art section are **hotlinked from `gallery095.wordpress.com`** — an
   uncontrolled external dependency on the most visual part of the page. Worth vendoring.
 - There is no favicon. The router answers `/favicon.ico` from the platform-owned

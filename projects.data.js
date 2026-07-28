@@ -14,6 +14,12 @@
 //   shot        screenshot of the running app, relative to the site root. Presence of
 //               this field is what promotes a card to the wide "showcase" treatment,
 //               so only set it for things a visitor can actually open and use.
+//   motion      an animated GIF of a real navigation flow through the app, recorded by
+//               `npm run gifs` (see scripts/demo-flows.mjs). Shown in place of `shot`.
+//               `shot` stays REQUIRED alongside it: it is the still fallback used when
+//               the visitor prefers reduced motion and when the GIF fails to load.
+//               Only add this where the motion says something a screenshot cannot —
+//               a static page gains nothing from being animated.
 //   shotPos     object-position for that screenshot. Cards crop hard, so this matters:
 //               default 'top center' keeps a header/nav visible, which is right for a
 //               dashboard, but an app whose content sits in the middle of the viewport
@@ -46,6 +52,8 @@ window.PROJECTS = [
     url: 'https://era-api.rudanxiao.com/',
     repo: 'https://github.com/medxiaorudan/EnterpriseResilienceAgent',
     shot: 'img/projects/enterprise-resilience-agent.jpg',
+    // Sidebar tour: Overview → Incidents → Approvals → Runbooks → Overview.
+    motion: 'img/projects/enterprise-resilience-agent.gif',
     // No icon: /favicon.ico returns 200 but with content-type text/html — it's the
     // SPA index fallback, not an image. A status-only check passes it, a browser
     // does not. Badge fallback instead until the app ships a real icon.
@@ -74,6 +82,10 @@ window.PROJECTS = [
     url: 'https://mammoscreen.rudanxiao.com/',
     repo: 'https://github.com/medxiaorudan/MammoScreen',
     shot: 'img/projects/mammoscreen.jpg',
+    // Load synthetic images, then label them with the keyboard shortcuts. Worth
+    // animating because "runs entirely in the browser" is a claim about behaviour, and
+    // the demo shows files being opened and labelled with no network round trip.
+    motion: 'img/projects/mammoscreen.gif',
     shotPos: 'center',
     // The only real favicon in the list so far. It was briefly broken — malformed XML
     // from a double hyphen inside an XML comment, which served a clean 200 but would
@@ -272,7 +284,21 @@ window.projectCard = function (p) {
     figure.setAttribute('aria-hidden', 'true');
     figure.tabIndex = -1;
     const img = document.createElement('img');
-    img.src = p.shot;
+    // Animate where there is an animation to show, but not for a visitor who has asked
+    // the OS for less motion — for them the still screenshot is the whole point of
+    // keeping `shot` around. An autoplaying GIF cannot be paused, so honouring the
+    // preference means not sending it at all rather than pausing it later.
+    const stillOnly =
+      window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    img.src = p.motion && !stillOnly ? p.motion : p.shot;
+    // If the GIF is missing or corrupt, fall back to the screenshot rather than
+    // leaving a broken image where the card's main visual should be.
+    if (p.motion && !stillOnly) {
+      img.onerror = function () {
+        img.onerror = null;
+        img.src = p.shot;
+      };
+    }
     img.alt = '';
     img.loading = 'lazy';
     img.decoding = 'async';

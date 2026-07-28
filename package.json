@@ -5,6 +5,14 @@
   "description": "Rudan Xiao's personal site, served at the rudanxiao.com apex.",
   "scripts": {
     "build": "bash scripts/build-static.sh",
-    "deploy": "npm run build && AWS_PROFILE=private PLATFORM_PREFIX=/rudanxiao ~/HobbyProjects/web-platform/scripts/deploy-app.sh www dist"
+    "deploy": "npm run build && AWS_PROFILE=private PLATFORM_PREFIX=/rudanxiao ~/HobbyProjects/web-platform/scripts/deploy-app.sh www dist",
+    "phantoms": "node scripts/gen-phantoms.mjs .demo-assets/phantoms 5",
+    "gifs": "npm run phantoms && node scripts/capture-demo-gif.mjs --flows scripts/demo-flows.mjs",
+    "gifs:verify": "node scripts/verify-gif.mjs"
+  },
+  "devDependencies": {
+    "gifenc": "^1.0.3",
+    "playwright": "^1.57.0",
+    "pngjs": "^7.0.0"
   }
 }
