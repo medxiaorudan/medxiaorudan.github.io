@@ -4,3 +4,4 @@ node_modules/
 .DS_Store
 .gstack/
 .demo-assets/
+.demo-gif-verify/

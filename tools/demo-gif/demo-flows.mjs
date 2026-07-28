@@ -18,8 +18,10 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 // Synthetic mammography images, built by scripts/gen-phantoms.mjs. They are generated
 // rather than committed because they are 5 MB of derivable pixels, and generated rather
 // than real because MammoScreen's own footer says to use synthetic images only.
+// Resolved from this file rather than the cwd, so the flows work whichever directory the
+// engine is invoked from. `../..` is the repo root — this file lives in tools/demo-gif/.
 const phantom = (n) =>
-  resolve(HERE, `../.demo-assets/phantoms/synthetic-${String(n).padStart(3, '0')}-${
+  resolve(HERE, `../../.demo-assets/phantoms/synthetic-${String(n).padStart(3, '0')}-${
     ['RCC', 'RMLO', 'LCC', 'LMLO', 'RMLO'][(n - 1) % 5]
   }.png`);
 

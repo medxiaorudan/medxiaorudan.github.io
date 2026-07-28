@@ -6,13 +6,7 @@
   "scripts": {
     "build": "bash scripts/build-static.sh",
     "deploy": "npm run build && AWS_PROFILE=private PLATFORM_PREFIX=/rudanxiao ~/HobbyProjects/web-platform/scripts/deploy-app.sh www dist",
-    "phantoms": "node scripts/gen-phantoms.mjs .demo-assets/phantoms 5",
-    "gifs": "bash scripts/capture-demo-gifs.sh",
-    "gifs:verify": "node scripts/verify-gif.mjs"
-  },
-  "devDependencies": {
-    "gifenc": "^1.0.3",
-    "playwright": "^1.57.0",
-    "pngjs": "^7.0.0"
+    "phantoms": "node tools/demo-gif/gen-phantoms.mjs .demo-assets/phantoms 5",
+    "gifs": "bash tools/demo-gif/capture.sh"
   }
 }

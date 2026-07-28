@@ -22,8 +22,8 @@ read-only; that is no longer true.
 - **Prefer a new file over editing a tracked one, still.** Not because we cannot push any
   more, but because Rudan keeps committing to `index.html` / `style.css` / `script.js` and
   every edit we make to those is a `git pull` conflict waiting to happen. Our additive files
-  — `package.json`, `scripts/`, `404.html`, `projects.data.js`, `projects.html`, `TODO.md`,
-  this one — can never conflict.
+  — `package.json`, `scripts/`, `tools/`, `404.html`, `projects.data.js`, `projects.html`,
+  `TODO.md`, this one — can never conflict.
 - Content edits to `index.html` / `style.css` / `script.js` *will* conflict on `git pull`.
   That's expected — just know it before editing.
 - `medxiaorudan/SmartCustomerService` also has push access. `EnterpriseResilienceAgent` and
@@ -87,18 +87,25 @@ The showcase cards can lead with a recorded navigation flow instead of a still. 
 with:
 
 ```bash
-npm run gifs                                   # all flows
-node scripts/capture-demo-gif.mjs --flows scripts/demo-flows.mjs mammoscreen   # just one
-node scripts/verify-gif.mjs img/projects/mammoscreen.gif 8 1250                # review it
+npm run gifs                                    # all flows
+./tools/demo-gif/capture.sh mammoscreen         # just one
+node ~/.claude/skills/demo-gif/verify-gif.mjs img/projects/mammoscreen.gif 8 1250   # review it
 ```
 
-- `scripts/capture-demo-gif.mjs` is the **engine** and is deliberately site-agnostic — it
-  takes `--flows <file>`. It is meant to be promoted to `web-platform/scripts/` and shared
-  with petterbuilds.com; tracked in `web-platform/TODO.md`. Keep site knowledge out of it
-  so that promotion stays a copy.
-- `scripts/demo-flows.mjs` holds the per-app steps. A flow's `slug` **must** match the
-  project `id` in `projects.data.js`, because that is what makes the output land at
-  `img/projects/<slug>.gif`, which is what `motion` points at.
+- **The engine is not in this repo.** It is generic — takes `--flows <file>`, knows nothing
+  about any site — so it lives globally as the `demo-gif` skill
+  (`~/.claude/skills/demo-gif/`, with `SKILL.md` and `reference/authoring-flows.md`). One
+  copy, so a fix benefits every site instead of drifting per repo. `tools/demo-gif/capture.sh`
+  resolves it from `$DEMO_GIF_ENGINE`, defaulting to the skill path, and fails with
+  instructions if absent.
+- `tools/demo-gif/` holds only what is true of *this* site: the flows, the phantom generator,
+  and the wrapper. See its README. **Nothing in the build or deploy path depends on the
+  skill** — `npm run build` only copies committed GIFs.
+- **This repo has no npm dependencies.** The recording deps live with the skill, and
+  `gen-phantoms.mjs` writes PNGs with a hand-rolled greyscale encoder over `node:zlib` rather
+  than pulling in `pngjs`, so our footprint here stays additive.
+- A flow's `slug` **must** match the project `id` in `projects.data.js`, because that is what
+  makes the output land at `img/projects/<slug>.gif`, which is what `motion` points at.
 - **The GIFs are committed; they are not built at deploy time.** Recording drives real
   browsers against the *live* sites, so a deploy that regenerated them would depend on
   three other deployments being healthy. `build-static.sh` only copies them.
@@ -126,7 +133,7 @@ node scripts/verify-gif.mjs img/projects/mammoscreen.gif 8 1250                #
     endpoint**: removing it means `rm -rf /srv/scs/data/'Hybridity AB'` on the box.
   - Re-recording is safe. The upload writes to `data/<company name>`, so it targets the same
     directory instead of accumulating companies.
-  - **The password never enters this repo.** `scripts/capture-demo-gifs.sh` reads
+  - **The password never enters this repo.** `tools/demo-gif/capture.sh` reads
     `ADMIN_PASSWORD` from `homeserver:/srv/scs/.env` into the capture process's environment at
     record time. `typeSecret` refuses any field that is not `type=password` — verified in the
     output: the frames show dots. Note the value is double-quoted in that `.env`, and passing

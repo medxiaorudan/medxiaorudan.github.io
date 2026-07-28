@@ -25,7 +25,7 @@ cp index.html projects.html projects.data.js style.css script.js 404.html "$OUT/
 # adding a new `shot` or `motion` to projects.data.js needs no build change.
 #
 # The GIFs are committed rather than built here on purpose: recording them drives real
-# browsers against the live sites (scripts/capture-demo-gif.mjs), which needs network and
+# browsers against the live sites (see tools/demo-gif/), which needs network and
 # takes ~15s per app. A deploy must not depend on three other deployments being healthy.
 # Regenerate them deliberately with `npm run gifs`.
 mkdir -p "$OUT/img/projects"

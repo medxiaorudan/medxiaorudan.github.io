@@ -15,7 +15,7 @@
 //               this field is what promotes a card to the wide "showcase" treatment,
 //               so only set it for things a visitor can actually open and use.
 //   motion      an animated GIF of a real navigation flow through the app, recorded by
-//               `npm run gifs` (see scripts/demo-flows.mjs). Shown in place of `shot`.
+//               `npm run gifs` (see tools/demo-gif/). Shown in place of `shot`.
 //               `shot` stays REQUIRED alongside it: it is the still fallback used when
 //               the visitor prefers reduced motion and when the GIF fails to load.
 //               Only add this where the motion says something a screenshot cannot —

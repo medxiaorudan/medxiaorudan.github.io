@@ -75,7 +75,7 @@ stays as the fallback, used when the visitor prefers reduced motion or the GIF f
 load; an autoplaying GIF cannot be paused, so that fallback is the accessibility path, not
 just belt-and-braces. `shotPos` anchors the still's crop (cards crop hard: a dashboard wants
 `top center` to keep its nav, an app whose content sits mid-viewport wants `center`).
-Recorder: `scripts/capture-demo-gif.mjs` + `scripts/demo-flows.mjs`, `npm run gifs`; what it
+Recorder: the global `demo-gif` skill plus this repo's `tools/demo-gif/`, `npm run gifs`; what it
 records versus authors is written up in `web-platform/TODO.md` ("Demo GIFs for app cards").
 
 ## Linked apps (not this repo, but they degrade this page)

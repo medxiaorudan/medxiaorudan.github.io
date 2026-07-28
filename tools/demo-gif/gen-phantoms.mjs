@@ -15,9 +15,64 @@
 //
 // Usage: node gen-phantoms.mjs <out-dir> [count]
 
-import { PNG } from 'pngjs';
+import { deflateSync } from 'node:zlib';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+
+// --- Minimal 8-bit greyscale PNG writer -------------------------------------
+// Hand-rolled rather than pulled from `pngjs` so this repo keeps zero npm
+// dependencies: it is Rudan's, our footprint should stay additive, and a greyscale
+// PNG is a short job — signature, IHDR, one deflated IDAT, IEND.
+
+const CRC_TABLE = (() => {
+  const t = new Int32Array(256);
+  for (let n = 0; n < 256; n++) {
+    let c = n;
+    for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
+    t[n] = c;
+  }
+  return t;
+})();
+
+function crc32(buf) {
+  let c = -1;
+  for (let i = 0; i < buf.length; i++) c = CRC_TABLE[(c ^ buf[i]) & 0xff] ^ (c >>> 8);
+  return (c ^ -1) >>> 0;
+}
+
+function chunk(type, data) {
+  const len = Buffer.alloc(4);
+  len.writeUInt32BE(data.length);
+  const body = Buffer.concat([Buffer.from(type, 'latin1'), data]);
+  const crc = Buffer.alloc(4);
+  crc.writeUInt32BE(crc32(body));
+  return Buffer.concat([len, body, crc]);
+}
+
+/** `grey` is one byte per pixel, row-major, length w*h. */
+function greyPng(grey, w, h) {
+  const ihdr = Buffer.alloc(13);
+  ihdr.writeUInt32BE(w, 0);
+  ihdr.writeUInt32BE(h, 4);
+  ihdr[8] = 8; // bit depth
+  ihdr[9] = 0; // colour type 0 = greyscale
+  // 10..12 = compression, filter and interlace methods; 0 is the only valid value.
+
+  // Each scanline is prefixed with its filter type. 0 (None) keeps this simple; the
+  // images are smooth noise, where predictive filters buy little.
+  const raw = Buffer.alloc((w + 1) * h);
+  for (let y = 0; y < h; y++) {
+    raw[y * (w + 1)] = 0;
+    Buffer.from(grey.buffer, grey.byteOffset + y * w, w).copy(raw, y * (w + 1) + 1);
+  }
+
+  return Buffer.concat([
+    Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+    chunk('IHDR', ihdr),
+    chunk('IDAT', deflateSync(raw, { level: 9 })),
+    chunk('IEND', Buffer.alloc(0)),
+  ]);
+}
 
 const outDir = process.argv[2] || 'phantoms';
 const count = Number(process.argv[3] || 5);
@@ -62,9 +117,7 @@ const written = [];
 
 for (let n = 0; n < count; n++) {
   const rand = rng(1337 + n * 7919);
-  // colorType 0 makes the *encoded* file 8-bit greyscale, but pngjs always keeps
-  // `data` as RGBA in memory and converts on write — so fill 4 bytes per pixel.
-  const png = new PNG({ width: W, height: H, colorType: 0 });
+  const grey = new Uint8Array(W * H); // one byte per pixel
 
   // Octaves of texture, coarse to fine.
   const oct = [
@@ -87,7 +140,7 @@ for (let n = 0; n < count; n++) {
 
   for (let y = 0; y < H; y++) {
     for (let x = 0; x < W; x++) {
-      const idx = (y * W + x) * 4;
+      const idx = y * W + x;
       const dy = (y - cy) / halfH;
 
       // Skin line: how far out the tissue reaches at this height. Tapers toward the
@@ -126,10 +179,7 @@ for (let n = 0; n < count; n++) {
       // flat synthetic zero.
       value += (rand() - 0.5) * 7 + 4;
       const g = Math.max(0, Math.min(255, Math.round(value)));
-      png.data[idx] = g;
-      png.data[idx + 1] = g;
-      png.data[idx + 2] = g;
-      png.data[idx + 3] = 255;
+      grey[idx] = g;
     }
   }
 
@@ -137,7 +187,7 @@ for (let n = 0; n < count; n++) {
   // the app's filmstrip reads plausibly.
   const name = `synthetic-${String(n + 1).padStart(3, '0')}-${['RCC', 'RMLO', 'LCC', 'LMLO', 'RMLO'][n % 5]}.png`;
   const path = join(outDir, name);
-  writeFileSync(path, PNG.sync.write(png));
+  writeFileSync(path, greyPng(grey, W, H));
   written.push(path);
 }
 
