@@ -255,10 +255,12 @@ body {
 
 /* Sections */
 .section {
-  /* Vertical rhythm tightened from clamp(4rem, 8vw, 8rem): with six sections the old
-     padding stacked to nearly a full viewport of empty space between chapters on a
-     desktop, which read as the page having ended. Horizontal padding is unchanged. */
-  padding: clamp(2.5rem, 5vw, 5rem) clamp(1.5rem, 5vw, 6rem);
+  /* Vertical rhythm, tightened twice from the original clamp(4rem, 8vw, 8rem). Remember
+     the gap a reader sees between two chapters is *double* this: one section's bottom
+     padding plus the next one's top. At 8rem that was 16rem of dead space on desktop,
+     which read as the page having ended; at 3rem it is 6rem. Horizontal padding is
+     deliberately unchanged — it sets line length, which is not the problem. */
+  padding: clamp(1.5rem, 3vw, 3rem) clamp(1.5rem, 5vw, 6rem);
   position: relative;
   z-index: 1;
 }
