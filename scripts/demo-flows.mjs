@@ -56,19 +56,34 @@ export const FLOWS = [
   },
 
   {
-    // Role picker → company → ask a question → real answer. The whole point of the app
-    // is the answer, so this flow has to include one.
+    // The whole product in one pass: an admin logs in, points the app at a real
+    // company's website, the app ingests it — then a visitor asks that company's
+    // assistant a question and gets an answer grounded in what was just ingested.
     //
-    // Two honest caveats, because this is the only flow where the app is slow and the
-    // only one whose output depends on ingested data:
+    // Showing the ingest is the point. A chat-only demo could be any chatbot; watching
+    // three URLs go in and become answerable is what makes it visibly a RAG system.
     //
-    // 1. The reply really takes 7-9s. `awaitResult` shows a short waiting beat and then
-    //    the genuine answer, so GIF time is not real time here. The answer is not
-    //    touched — only the wait is shortened.
-    // 2. The question is chosen to suit what is actually ingested for the `demo`
-    //    company, which today is RFC 2606 (reserved TLDs). Asked something outside that
-    //    corpus, the app answers vaguely — see the note in CLAUDE.md. This is a demo
-    //    query matched to demo data, not a doctored result.
+    // REQUIRES `SCS_ADMIN_PASSWORD` in the environment. Never put it in this file — see
+    // the npm script, which pipes it straight from the box into the capture process.
+    // `typeSecret` refuses any field that is not type=password, so what the frames
+    // capture is the app's own masking.
+    //
+    // Honest caveats, since this flow both writes to production and shows an LLM:
+    //
+    // 1. It really ingests hybridity.ai into the live instance. `Hybridity AB` is a real
+    //    public company selectable on the live site, so what the GIF shows is
+    //    reproducible by a visitor rather than staged. Re-running is safe: the upload
+    //    writes to `data/<company name>`, so it targets the same directory instead of
+    //    accumulating companies. There is no delete endpoint — removing it means
+    //    `rm -rf /srv/scs/data/'Hybridity AB'` on the box.
+    // 2. The ingested text is Hybridity's own public marketing copy, fetched live from
+    //    their site at record time. Nothing about it is written by us.
+    // 3. Login is ~1s but the reply genuinely takes 7-9s. `awaitResult` records a short
+    //    waiting beat and then the real answer, so GIF time is not elapsed time. The
+    //    answer itself is untouched.
+    // 4. The step back to the role picker is a `navigate`, not a click — the app offers
+    //    no link back from the admin screen. It reads as a scene change from admin to
+    //    visitor, which is what it is.
     slug: 'smart-customer-service',
     url: 'https://smart-customer-service.rudanxiao.com/',
     colorScheme: 'light',
@@ -77,27 +92,61 @@ export const FLOWS = [
     // the app's own content instead. Still 16:9, because the card crops to that.
     viewport: { width: 1024, height: 576 },
     run: async (a) => {
-      await a.hold(1100); // the role picker
+      const SITE = 'https://smart-customer-service.rudanxiao.com/';
+      // Frame counts are kept tight throughout: this is the longest flow of the three
+      // and every click costs ~10 frames, so moves are 4 frames and settles are 3.
+      const move = { frames: 4 };
 
-      await a.tap('text="User"', { move: { frames: 6 }, until: 'text=Select Company', after: 1200 });
-      await a.tap('text="demo"', { move: { frames: 5 }, until: 'textarea', after: 1200 });
+      await a.hold(900); // the role picker
 
-      await a.tap('textarea', { move: { frames: 5 }, settle: 1, after: 350 });
-      await a.type('textarea', 'Which domain names are reserved for documentation and examples?', {
-        chunk: 4,
-        delay: 55,
+      // --- Admin: log in and feed the app a real company's site ---
+      await a.tap('text="Admin"', { move, until: 'input[type=password]', settle: 3, after: 800 });
+      await a.typeSecret('input[type=password]', 'SCS_ADMIN_PASSWORD');
+      await a.tap('button:has-text("Login")', {
+        move,
+        until: 'text=Data Source Configuration',
+        settle: 3,
+        after: 900,
       });
+
+      await a.type('input[placeholder="Enter company name"]', 'Hybridity AB', { chunk: 4, delay: 60 });
+      // Coarse chunks: three URLs are ~90 characters, and typing them 3 at a time would
+      // cost 30 frames for motion the eye reads as continuous at 12.
+      await a.type(
+        'textarea',
+        'https://hybridity.ai/company\nhttps://hybridity.ai/platform\nhttps://hybridity.ai/security',
+        { chunk: 12, delay: 70 }
+      );
+
+      await a.tap('button:has-text("Upload Data Sources")', { move, settle: 2, after: 200 });
+      await a.hideCursor();
+      // Ingestion — fetch, chunk and embed three pages — really takes ~5s.
+      await a.awaitResult('text=Data uploaded successfully!', {
+        spinnerFrames: 4,
+        spinnerDelay: 240,
+        after: 1600,
+      });
+
+      // --- Visitor: ask the company's own assistant ---
+      await a.navigate(SITE, { until: 'text="User"', after: 900 });
+      await a.tap('text="User"', { move, until: 'text=Select Company', settle: 3, after: 900 });
+      await a.tap('text="Hybridity AB"', { move, until: 'textarea', settle: 3, after: 900 });
+
+      await a.tap('textarea', { move, settle: 1, after: 250 });
+      await a.type('textarea', 'What does Hybridity help organisations with?', { chunk: 4, delay: 55 });
 
       // The assistant's messages are the left-aligned bubbles and the greeting is
       // already one of them, so the reply is the second — a selector that does not
       // depend on knowing what the answer will say.
-      const reply = ':nth-match(div.flex.justify-start, 2)';
-      await a.tap('button:has-text("Send")', { move: { frames: 5 }, settle: 2, after: 250 });
+      await a.tap('button:has-text("Send")', { move, settle: 2, after: 250 });
       // The arriving reply pushes the input row down, so a pointer left at the Send
-      // button's old coordinates ends up floating next to it. Nothing else here is
-      // mouse-driven, so retire it.
+      // button's old coordinates ends up floating beside it.
       await a.hideCursor();
-      await a.awaitResult(reply, { spinnerFrames: 5, spinnerDelay: 220, after: 3200 });
+      await a.awaitResult(':nth-match(div.flex.justify-start, 2)', {
+        spinnerFrames: 4,
+        spinnerDelay: 240,
+        after: 3400,
+      });
     },
   },
 

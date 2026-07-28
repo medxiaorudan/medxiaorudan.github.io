@@ -396,6 +396,51 @@ function makeActions(page, rec, viewport) {
       }
     },
 
+    /**
+     * Type a credential read from the environment, so a flow file can script a login
+     * without ever containing the secret. Exists to make the safe path the easy one:
+     * a flow that needs a password has no reason to reach for a literal.
+     *
+     * Two properties worth stating, because a recorded login is a real disclosure risk:
+     * only ever point this at an `<input type="password">`, so what is captured is the
+     * app's own masking rather than the characters; and the value is never logged, never
+     * put in a label, and never included in a thrown error.
+     */
+    typeSecret: async (target, envVar, { delay = 70, chunk = 8 } = {}) => {
+      const secret = process.env[envVar];
+      if (!secret) throw new Error(`${envVar} is not set in the environment`);
+
+      const el = page.locator(target).first();
+      const type = await el.getAttribute('type');
+      if (type !== 'password') {
+        throw new Error(
+          `refusing to type ${envVar} into a field of type "${type}" — ` +
+            `only type=password masks it in the recording`
+        );
+      }
+      await el.click();
+      // Coarse chunks: the frames show dots, so finer granularity buys no realism and
+      // would leak the length more precisely than necessary.
+      for (let i = 0; i < secret.length; i += chunk) {
+        await el.type(secret.slice(i, i + chunk), { delay: 0 });
+        await rec.shoot(delay);
+      }
+    },
+
+    /**
+     * Go to another URL mid-flow. This is a cut, not a click — use it where a demo
+     * legitimately changes scene (an admin finishing a task, then a visitor arriving)
+     * and say so in the flow, because the viewer sees no cause for the change.
+     */
+    navigate: async (url, { until = null, after = 1100 } = {}) => {
+      await actions.hideCursor();
+      await page.goto(url, { waitUntil: 'networkidle', timeout: 45000 });
+      if (until) await page.locator(until).first().waitFor({ state: 'visible', timeout: 20000 });
+      await installCursor(page); // a navigation discards the injected overlay
+      await page.waitForTimeout(300);
+      await rec.shoot(after);
+    },
+
     /** Eased scroll. Frames are the cost here, so keep it short. */
     scrollBy: async (dy, { frames = 9, delay = 45 } = {}) => {
       let prev = 0;
@@ -439,8 +484,13 @@ function makeActions(page, rec, viewport) {
      */
     awaitResult: async (until, { spinnerFrames = 4, spinnerDelay = 200, timeout = 90000, after = 2200 } = {}) => {
       await rec.shootBurst(spinnerFrames, spinnerDelay);
-      await page.locator(until).first().waitFor({ state: 'visible', timeout });
-      await page.waitForTimeout(400);
+      const target = page.locator(until).first();
+      await target.waitFor({ state: 'visible', timeout });
+      // "Visible" in Playwright's sense only means rendered and non-empty — it can still
+      // be below the fold, which on a long form is exactly where a confirmation message
+      // lands. Waiting for a result the frame does not show is worse than not waiting.
+      await target.scrollIntoViewIfNeeded();
+      await page.waitForTimeout(450);
       await rec.shoot(after);
     },
 

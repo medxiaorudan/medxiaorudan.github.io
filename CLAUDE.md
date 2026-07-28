@@ -109,17 +109,27 @@ node scripts/verify-gif.mjs img/projects/mammoscreen.gif 8 1250                #
 
 ## Known content notes
 
-- **Smart Customer Service's demo GIF depends on a question chosen to fit its data.** The
-  `demo` company's ingested corpus is placeholder RFC 2606 text about reserved TLDs. Asked
-  "What does this company do?" it returns a paragraph about Donald E. Eastlake and DNS
-  testing; asked "Which domain names are reserved for documentation and examples?" it gives a
-  correct, well-formed answer, which is the question the flow asks. That is a demo query
-  matched to demo data, not a doctored result — but it does mean **the card is only as good
-  as that one question**. Ingest a real company description (`SmartCustomerService` is the one
-  Rudan repo we can push to) and the flow can ask something a visitor would actually ask.
-  Tracked in `web-platform/TODO.md`.
-- The SCS reply genuinely takes 7-17s. `awaitResult()` records a short waiting beat and then
-  the real answer, so **GIF time is not elapsed time on that card**. The answer is untouched.
+- **The Smart Customer Service GIF logs into the live admin and writes to production.** It
+  records the whole product: admin logs in → points the app at three `hybridity.ai` pages →
+  the app ingests them (~5s, genuinely) → a visitor then asks Hybridity AB's assistant a
+  question and gets an answer grounded in what was just ingested.
+  - **`Hybridity AB` is now a real company on the live instance**, deliberately left there so
+    the GIF shows a path a visitor can reproduce rather than something staged. Companies are
+    just directories — `get_companies` is `os.listdir("./data/")` — and **there is no delete
+    endpoint**: removing it means `rm -rf /srv/scs/data/'Hybridity AB'` on the box.
+  - Re-recording is safe. The upload writes to `data/<company name>`, so it targets the same
+    directory instead of accumulating companies.
+  - **The password never enters this repo.** `scripts/capture-demo-gifs.sh` reads
+    `ADMIN_PASSWORD` from `homeserver:/srv/scs/.env` into the capture process's environment at
+    record time. `typeSecret` refuses any field that is not `type=password` — verified in the
+    output: the frames show dots. Note the value is double-quoted in that `.env`, and passing
+    the quotes through fails as a bare 401.
+  - The reply genuinely takes 7-9s. `awaitResult()` records a short waiting beat and then the
+    real answer, so **GIF time is not elapsed time on that card**. The answer is untouched.
+  - The ingested text is Hybridity's own public marketing copy, fetched live from their site
+    at record time. Nothing about it is written by us.
+  - The `demo` company is still the old placeholder RFC 2606 corpus. Nothing points at it any
+    more, but it is still publicly selectable.
 - The eight images in the art section are **hotlinked from `gallery095.wordpress.com`** — an
   uncontrolled external dependency on the most visual part of the page. Worth vendoring.
 - There is no favicon. The router answers `/favicon.ico` from the platform-owned

@@ -7,7 +7,7 @@
     "build": "bash scripts/build-static.sh",
     "deploy": "npm run build && AWS_PROFILE=private PLATFORM_PREFIX=/rudanxiao ~/HobbyProjects/web-platform/scripts/deploy-app.sh www dist",
     "phantoms": "node scripts/gen-phantoms.mjs .demo-assets/phantoms 5",
-    "gifs": "npm run phantoms && node scripts/capture-demo-gif.mjs --flows scripts/demo-flows.mjs",
+    "gifs": "bash scripts/capture-demo-gifs.sh",
     "gifs:verify": "node scripts/verify-gif.mjs"
   },
   "devDependencies": {
