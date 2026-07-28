@@ -83,6 +83,24 @@ window.PROJECTS = [
     tags: ['TypeScript', 'DICOM', 'Medical Imaging', 'Browser-only'], year: 2026, hue: 330,
   },
   {
+    id: 'mssl',
+    name: 'MSSL',
+    description:
+      'PyTorch model for vascular segmentation and classification from limited data, combining semi-supervised and supervised training for resource-efficient auto-segmentation. Published at MICCAI.',
+    repo: 'https://github.com/medxiaorudan/MSSL',
+    tier: 'core', featured: true,
+    tags: ['PyTorch', 'Semi-supervised', 'Medical AI', 'MICCAI'], year: 2023, hue: 150,
+  },
+  {
+    id: 'rcc-vascular-morph-classify',
+    name: 'RCC Vascular Morphology',
+    description:
+      'Kidney cancer classification that uniquely leverages vascular network properties for RCC identification — Python for ML, MATLAB for advanced feature extraction.',
+    repo: 'https://github.com/medxiaorudan/RCC-VascularMorphClassify',
+    tier: 'core', featured: true,
+    tags: ['MATLAB', 'Python', 'Deep Learning', 'Oncology'], year: 2023, hue: 285,
+  },
+  {
     id: 'code-generation',
     name: 'Code Generation',
     description:
@@ -92,25 +110,7 @@ window.PROJECTS = [
     tags: ['C++', 'CodeLlama', 'LangChain', 'Fine-tuning'], year: 2025, hue: 20,
   },
 
-  // ---------- Selected work. The two PhD projects lead. ----------
-  {
-    id: 'mssl',
-    name: 'MSSL',
-    description:
-      'PyTorch model for vascular segmentation and classification from limited data, combining semi-supervised and supervised training for resource-efficient auto-segmentation. Published at MICCAI.',
-    repo: 'https://github.com/medxiaorudan/MSSL',
-    tier: 'flagship', featured: true,
-    tags: ['PyTorch', 'Semi-supervised', 'Medical AI', 'MICCAI'], year: 2023, hue: 150,
-  },
-  {
-    id: 'rcc-vascular-morph-classify',
-    name: 'RCC Vascular Morphology',
-    description:
-      'Kidney cancer classification that uniquely leverages vascular network properties for RCC identification — Python for ML, MATLAB for advanced feature extraction.',
-    repo: 'https://github.com/medxiaorudan/RCC-VascularMorphClassify',
-    tier: 'flagship', featured: true,
-    tags: ['MATLAB', 'Python', 'Deep Learning', 'Oncology'], year: 2023, hue: 285,
-  },
+  // ---------- Selected work ----------
   {
     id: 'prior-art-discovery-agent',
     name: 'Prior Art Discovery Agent',
