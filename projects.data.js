@@ -83,7 +83,7 @@ window.PROJECTS = [
     // did not exist yet; it was added 2026-07-28.
     icon: 'https://smart-customer-service.rudanxiao.com/favicon.ico',
     status: 'live', tier: 'core', featured: true,
-    tags: ['Python', 'React', 'RAG', 'DeepSeek'], year: 2026, hue: 265,
+    tags: ['Python', 'React', 'RAG', 'DeepSeek'], year: 2025, hue: 265,
   },
   {
     id: 'mammoscreen',
