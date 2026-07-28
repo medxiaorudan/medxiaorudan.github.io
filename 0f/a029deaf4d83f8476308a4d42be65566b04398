@@ -1,0 +1,28 @@
+projects.data.js
+  s_9ec0b83bf1c49f::t_09265d2a2458cb 106
+  s_9ec0b83bf1c49f::t_71468f0ba4e67b 79-84
+  s_9ec0b83bf1c49f::t_dac16508bb504f 249-252
+  s_9ec0b83bf1c49f::t_da93c60df3323c 257-259
+CLAUDE.md
+  s_9ec0b83bf1c49f::t_8da38bbc678eb1 53-54
+  s_9ec0b83bf1c49f::t_4fa8ba432edb86 142-148
+  s_9ec0b83bf1c49f::t_f80b5e37cf54ed 8-26,29-30
+TODO.md
+  s_9ec0b83bf1c49f::t_c8c9fb38a02f4a 10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "0fa029deaf4d83f8476308a4d42be65566b04398",
+  "prompts": {},
+  "sessions": {
+    "s_9ec0b83bf1c49f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "4066b67c-b792-4f91-97c9-48903bbbf508",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Petter Andersson <12279747+Lolispo@users.noreply.github.com>"
+    }
+  }
+}
